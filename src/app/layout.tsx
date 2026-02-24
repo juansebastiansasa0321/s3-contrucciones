@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export const metadata: Metadata = {
   title: "S3 Construcciones | Construcción y Acabados en Cali y Jamundí",
@@ -25,7 +28,7 @@ export const metadata: Metadata = {
     title: "S3 Construcciones | Construcción y Acabados en Cali y Jamundí",
     description:
       "Construimos tu hogar desde cero con acabados de primera calidad en Cali y Jamundí. ¡Más de 10 años de experiencia!",
-    url: "https://construccionespremium.com",
+    url: "https://s3construcciones.com",
     siteName: "S3 Construcciones",
     locale: "es_CO",
     type: "website",
@@ -41,7 +44,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://construccionespremium.com",
+    canonical: "https://s3construcciones.com",
   },
 };
 
@@ -51,7 +54,7 @@ const jsonLd = {
   name: "S3 Construcciones",
   description:
     "Empresa líder en construcción de viviendas, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
-  url: "https://construccionespremium.com",
+  url: "https://s3construcciones.com",
   telephone: "+573147872392",
   address: {
     "@type": "PostalAddress",
@@ -94,8 +97,26 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Google Analytics */}
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body>{children}</body>
     </html>
   );
 }
+
