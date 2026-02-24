@@ -1,0 +1,105 @@
+[
+  {
+    "id": "hontnar-mercedes-01",
+    "title": "Casas desde Cero — Conjunto Hontnar de las Mercedes",
+    "description": "Construcción completa de viviendas desde cimentación en el exclusivo conjunto Hontnar de las Mercedes. Proyecto integral que incluye estructura, acabados premium, zonas verdes y áreas comunes. Más de 15 unidades entregadas con los más altos estándares de calidad.",
+    "location": "Jamundí, Valle del Cauca",
+    "category": "construccion",
+    "images": [
+      "/uploads/1771722171884-lxqxv1.webp",
+      "/uploads/1771722171893-00sop4.webp",
+      "/uploads/1771722171899-wox8fk.webp",
+      "/uploads/1771722171908-1ojav5.webp",
+      "/uploads/1771722171921-i2rn4f.webp",
+      "/uploads/1771722171932-b8xuv7.webp",
+      "/uploads/1771722171936-38359a.webp",
+      "/uploads/1771722171939-94jd1x.webp"
+    ],
+    "image": "/uploads/1771722171884-lxqxv1.webp",
+    "features": [
+      "Construcción desde Cero",
+      "Acabados Premium",
+      "Zonas Verdes",
+      "Estructura Sismorresistente"
+    ],
+    "year": 2025
+  },
+  {
+    "id": "piscina-cali-01",
+    "title": "Diseño, planeación e instalación de todo lo relacionado con el sector de la construcción.",
+    "description": "En Saavedra Construcciones, somos expertos en dar vida a tus proyectos desde el primer trazo. Ofrecemos soluciones integrales en diseño, planeación e instalación de todo lo relacionado con el sector de la construcción.\n\nYa sea una remodelación residencial en Cali o un gran proyecto de infraestructura en Jamundí, nuestro compromiso es la excelencia técnica y el cumplimiento. Construimos con visión, diseñamos con precisión.",
+    "location": "Jamundi, Valle del Cauca",
+    "category": "construccion",
+    "images": [
+      "/uploads/1771723228803-xm151a.jpg",
+      "/uploads/1771723228805-zjral9.jpg",
+      "/uploads/1771723228808-wwwqkt.jpg",
+      "/uploads/1771723228811-fkovb8.jpg",
+      "/uploads/1771723228815-r6mdj7.jpg",
+      "/uploads/1771723228819-0zlort.jpg",
+      "/uploads/1771723228823-ebjkig.jpg",
+      "/uploads/1771723228834-u5a0x8.jpg",
+      "/uploads/1771725561159-gxit79.jpg",
+      "/uploads/1771725561161-6w2vgw.jpg",
+      "/uploads/1771725561166-v652zc.jpg",
+      "/uploads/1771725561169-ahnwrs.jpg",
+      "/uploads/1771725561170-l207ee.jpg"
+    ],
+    "image": "/uploads/1771723228803-xm151a.jpg",
+    "features": [
+      "Deck en Madera",
+      "Sistema de Filtración"
+    ],
+    "year": 2022
+  },
+  {
+    "id": "casa-campestre-01",
+    "title": "Pisos y enchapes",
+    "description": "La belleza de un espacio reside en sus detalles. En S3 Construcciones, elevamos el nivel de tus ambientes con servicios especializados de instalación de pisos y enchapes de alta gama.\n\nTrabajamos con porcelanatos, cerámicas, piedras naturales y laminados, garantizando cortes precisos, nivelación perfecta y juntas impecables. Ya sea una sala moderna en Cali o una zona social en Jamundí, convertimos superficies comunes en obras de arte duraderas.",
+    "location": "Jamundí, Valle del Cauca",
+    "category": "construccion",
+    "images": [
+      "/uploads/1771723670723-yn58ur.jpg",
+      "/uploads/1771723670727-rskm7h.jpg",
+      "/uploads/1771723670734-zq7o96.jpg",
+      "/uploads/1771725611506-zpmeno.jpg",
+      "/uploads/1771725611509-6dnlci.jpg",
+      "/uploads/1771725611511-uggj4r.jpg",
+      "/uploads/1771725611512-pvibh1.jpg",
+      "/uploads/1771725611518-b8lmga.jpg",
+      "/uploads/1771725611520-vo5c8e.jpg"
+    ],
+    "image": "/uploads/1771723670723-yn58ur.jpg",
+    "features": [
+      "2 Pisos",
+      "220m²",
+      "Piedra Natural",
+      "Zona BBQ",
+      "Jardín"
+    ],
+    "year": 2024
+  },
+  {
+    "id": "ornamentacion-01",
+    "title": " Estructura y calculo de las mismas",
+    "description": "La seguridad de tu familia y tu inversión es nuestra prioridad. En S3 Construcciones, realizamos el diseño, cálculo y análisis de estructuras bajo la estricta normativa NSR-10.\n\nNo solo construimos; garantizamos que cada columna, viga y cimentación soporte las cargas necesarias y los movimientos sísmicos propios de nuestra región. Entregamos memorias de cálculo detalladas y planos estructurales listos para trámites de curaduría en Cali y Jamundí.",
+    "location": "Cali, Valle del Cauca",
+    "category": "ornamentacion",
+    "images": [
+      "/uploads/1771723874377-srgos4.jpg",
+      "/uploads/1771723874381-gk4ylo.jpg",
+      "/uploads/1771723874388-noi7cf.jpg",
+      "/uploads/1771723874390-bj616a.jpg",
+      "/uploads/1771723874395-hd2s6z.jpg",
+      "/uploads/1771723874399-d9lpth.jpg"
+    ],
+    "image": "/uploads/1771723874377-srgos4.jpg",
+    "features": [
+      "Rejas de Seguridad",
+      "Puertas Metálicas",
+      "Barandas Acero Inox.",
+      "Pérgolas"
+    ],
+    "year": 2024
+  }
+]

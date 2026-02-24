@@ -1,0 +1,58 @@
+[
+  {
+    "id": "construccion-completa",
+    "title": "Construcción Completa",
+    "description": "Construimos tu casa desde los cimientos hasta la entrega final. Proyecto llave en mano con los mejores materiales y acabados.",
+    "icon": "Building2",
+    "category": "construccion"
+  },
+  {
+    "id": "acabados",
+    "title": "Acabados de Alta Calidad",
+    "description": "Pisos, enchapes, estucos, cielos rasos y todos los acabados que transforman tu espacio en un hogar de ensueño.",
+    "icon": "Paintbrush",
+    "category": "acabados"
+  },
+  {
+    "id": "remodelacion",
+    "title": "Remodelación",
+    "description": "Renovamos cocinas, baños y espacios completos. Dale una nueva vida a tu hogar con diseños modernos.",
+    "icon": "Hammer",
+    "category": "remodelacion"
+  },
+  {
+    "id": "pintura",
+    "title": "Pintura Profesional",
+    "description": "Pintura interior y exterior con productos de primera calidad. Técnicas decorativas y acabados impecables.",
+    "icon": "Palette",
+    "category": "acabados"
+  },
+  {
+    "id": "plomeria",
+    "title": "Plomería e Instalaciones",
+    "description": "Instalación y reparación de redes hidráulicas y sanitarias. Trabajo garantizado y materiales certificados.",
+    "icon": "Wrench",
+    "category": "instalaciones"
+  },
+  {
+    "id": "ornamentacion",
+    "title": "Ornamentación",
+    "description": "Diseño y fabricación de estructuras metálicas decorativas: rejas, pasamanos, puertas, ventanas y cerramientos con acabados de lujo.",
+    "icon": "Fence",
+    "category": "ornamentacion"
+  },
+  {
+    "id": "techos",
+    "title": "Techos y Cubiertas",
+    "description": "Instalación de techos en teja, eternit, policarbonato y cielo raso. Protección y diseño para tu hogar.",
+    "icon": "Home",
+    "category": "construccion"
+  },
+  {
+    "id": "pisos",
+    "title": "Pisos y Enchapes",
+    "description": "Instalación de pisos en cerámica, porcelanato, madera laminada y vinilo. Precisión milimétrica en cada detalle.",
+    "icon": "LayoutGrid",
+    "category": "acabados"
+  }
+]

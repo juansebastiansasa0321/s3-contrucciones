@@ -1,0 +1,32 @@
+[
+  {
+    "id": "c-1771947577040",
+    "name": "Juan",
+    "phone": "3147875392",
+    "email": "JUANSEBASTIANSASA@GMAIL.COM",
+    "service": "Remodelación",
+    "message": "Hola",
+    "status": "nuevo",
+    "createdAt": "2026-02-24T15:39:37.040Z"
+  },
+  {
+    "id": "c-1771948154726",
+    "name": "Juan",
+    "phone": "3147872392",
+    "email": "juansasa@icloud.com",
+    "service": "Pintura",
+    "message": "WjajajaajajajSjakajasb",
+    "status": "nuevo",
+    "createdAt": "2026-02-24T15:49:14.726Z"
+  },
+  {
+    "id": "c-1771950110951",
+    "name": "Juan Saavedra Santiago",
+    "phone": "3147872392",
+    "email": "JUANSEBASTIANSASA@GMAIL.COM",
+    "service": "Remodelación",
+    "message": "zxsdasdasdadadadadadads",
+    "status": "nuevo",
+    "createdAt": "2026-02-24T16:21:50.951Z"
+  }
+]

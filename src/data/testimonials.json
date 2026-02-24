@@ -1,0 +1,30 @@
+[
+    {
+        "id": "t1",
+        "name": "María Fernanda López",
+        "location": "Jamundí",
+        "text": "Excelente trabajo en la construcción de nuestra casa. Cumplieron con los tiempos y la calidad es impresionante. ¡Totalmente recomendados!",
+        "rating": 5
+    },
+    {
+        "id": "t2",
+        "name": "Carlos Andrés Muñoz",
+        "location": "Cali",
+        "text": "Remodelaron nuestra cocina y baños y quedaron espectaculares. El equipo es muy profesional y siempre están pendientes de cada detalle.",
+        "rating": 5
+    },
+    {
+        "id": "t3",
+        "name": "Andrea Gutiérrez",
+        "location": "Jamundí",
+        "text": "Los acabados de nuestra casa quedaron hermosos. Los pisos en porcelanato y la pintura decorativa le dieron un toque de lujo increíble.",
+        "rating": 5
+    },
+    {
+        "id": "t4",
+        "name": "Jorge Hernández",
+        "location": "Cali",
+        "text": "Muy satisfecho con el trabajo eléctrico y de plomería. Todo funciona perfecto y cumplieron con la normativa. Gran equipo de trabajo.",
+        "rating": 5
+    }
+]
