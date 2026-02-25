@@ -1,7 +1,16 @@
 import type { MetadataRoute } from "next";
+import blogData from "@/data/blog.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = "https://s3construcciones.com";
+
+    const blogPages = blogData.map((post) => ({
+        url: `${baseUrl}/blog/${post.id}`,
+        lastModified: new Date(post.date),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+    }));
+
     return [
         {
             url: baseUrl,
@@ -21,6 +30,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "weekly",
             priority: 0.8,
         },
+        {
+            url: `${baseUrl}/blog`,
+            lastModified: new Date(),
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        ...blogPages,
         {
             url: `${baseUrl}/#contacto`,
             lastModified: new Date(),

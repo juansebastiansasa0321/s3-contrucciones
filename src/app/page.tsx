@@ -6,6 +6,7 @@ import ContactForm from "@/components/ContactForm";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import blogData from "@/data/blog.json";
 import {
   ArrowRight,
   Shield,
@@ -295,10 +296,68 @@ export default function Home() {
                 </div>
                 <div>
                   <h4>Cobertura Total</h4>
-                  <p>Nos desplazamos a cualquier punto de estas ciudades</p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== BLOG PREVIEW ===== */}
+      <section className="section section-alt">
+        <div className="container">
+          <div className="section-header">
+            <span className="label">Blog</span>
+            <h2 className="heading-lg">
+              Guías y consejos de{" "}
+              <span className="text-gradient">construcción</span>
+            </h2>
+            <p>
+              Artículos escritos por expertos para ayudarte en tu próximo
+              proyecto.
+            </p>
+          </div>
+          <div className="blog-grid">
+            {blogData.slice(0, 2).map((post) => (
+              <a
+                key={post.id}
+                href={`/blog/${post.id}`}
+                className="blog-card"
+              >
+                <div className="blog-card-image">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
+                  />
+                  <div className="blog-card-category">
+                    {post.category}
+                  </div>
+                </div>
+                <div className="blog-card-content">
+                  <h3 className="blog-card-title">{post.title}</h3>
+                  <p className="blog-card-excerpt">{post.excerpt}</p>
+                  <div className="blog-card-footer">
+                    <span className="blog-card-meta">
+                      <Clock size={14} />
+                      {post.readTime} min de lectura
+                    </span>
+                    <span className="blog-card-link">
+                      Leer más <ArrowRight size={16} />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+          <div style={{ textAlign: "center", marginTop: 36 }}>
+            <a href="/blog" className="btn btn-secondary">
+              Ver todos los artículos
+              <ArrowRight size={18} />
+            </a>
           </div>
         </div>
       </section>
