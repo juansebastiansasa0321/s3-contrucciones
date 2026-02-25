@@ -1,7 +1,6 @@
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import ServiceCard from "@/components/ServiceCard";
-import ProjectGallery from "@/components/ProjectGallery";
-import TestimonialCarousel from "@/components/TestimonialCarousel";
 import ContactForm from "@/components/ContactForm";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
@@ -24,6 +23,14 @@ import servicesData from "@/data/services.json";
 import projectsData from "@/data/projects.json";
 import testimonialsData from "@/data/testimonials.json";
 
+// Dynamic imports for below-the-fold heavy components
+const ProjectGallery = dynamic(() => import("@/components/ProjectGallery"), {
+  ssr: true,
+});
+const TestimonialCarousel = dynamic(() => import("@/components/TestimonialCarousel"), {
+  ssr: true,
+});
+
 export default function Home() {
   return (
     <>
@@ -43,7 +50,6 @@ export default function Home() {
             fill
             style={{ objectFit: "cover", opacity: 0.25 }}
             priority
-            unoptimized
           />
         </div>
         <div className="container">
@@ -149,7 +155,6 @@ export default function Home() {
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                unoptimized
               />
             </div>
             <div className="about-text">
@@ -331,7 +336,6 @@ export default function Home() {
                     fill
                     style={{ objectFit: "cover" }}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    unoptimized
                   />
                   <div className="blog-card-category">
                     {post.category}

@@ -97,8 +97,33 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
     const otherPosts = blogData.filter((p) => p.id !== slug).slice(0, 2);
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: post.title,
+        description: post.excerpt,
+        image: `https://s3construcciones.com${post.image}`,
+        datePublished: new Date(post.date).toISOString(),
+        author: {
+            "@type": "Person",
+            name: post.author,
+        },
+        publisher: {
+            "@type": "Organization",
+            name: "S3 Construcciones",
+            logo: {
+                "@type": "ImageObject",
+                url: "https://s3construcciones.com/favicon.ico",
+            },
+        },
+    };
+
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Navbar />
 
             <article className="blog-post">
@@ -111,7 +136,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         style={{ objectFit: "cover" }}
                         sizes="100vw"
                         priority
-                        unoptimized
                     />
                     <div className="blog-post-hero-overlay" />
                 </div>
