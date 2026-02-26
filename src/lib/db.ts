@@ -1,9 +1,8 @@
-import { Pool } from 'pg';
+import { createPool } from '@vercel/postgres';
 
-// Create a singleton pool to use throughout the Next.js API routes
-const pool = new Pool({
+// Create a pool using Vercel's optimized serverless driver
+const pool = createPool({
     connectionString: process.env.POSTGRES_URL,
-    ssl: { rejectUnauthorized: false }
 });
 
 export default pool;
