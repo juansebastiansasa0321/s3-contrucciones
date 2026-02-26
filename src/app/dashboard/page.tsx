@@ -18,6 +18,7 @@ import {
     FolderOpen,
     MapPin,
     Upload,
+    FileText,
 } from "lucide-react";
 
 interface Contact {
@@ -43,6 +44,19 @@ interface Project {
     images?: string[];
 }
 
+interface BlogPost {
+    id: string;
+    title: string;
+    excerpt: string;
+    content: string;
+    author: string;
+    date: string;
+    category: string;
+    tags: string[];
+    readTime: number;
+    image: string;
+}
+
 const PREDEFINED_FEATURES = [
     "Cocina Integral",
     "Cielo Raso",
@@ -64,26 +78,38 @@ const PREDEFINED_FEATURES = [
 export default function DashboardPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
+    const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<"contacts" | "projects">("contacts");
+    const [activeTab, setActiveTab] = useState<"contacts" | "projects" | "blog">("contacts");
     const [showProjectForm, setShowProjectForm] = useState(false);
+    const [showBlogForm, setShowBlogForm] = useState(false);
     const [editingProject, setEditingProject] = useState<Project | null>(null);
+    const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
 
-    // Form state
+    // Form state Projects
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     const [imageUrls, setImageUrls] = useState<string[]>([]);
     const [customFeature, setCustomFeature] = useState("");
+
+    // Form state Blog
+    const [blogImageUrl, setBlogImageUrl] = useState("");
+    const [blogTags, setBlogTags] = useState<string[]>([]);
+    const [blogCustomTag, setBlogCustomTag] = useState("");
+
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const blogFileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         Promise.all([
             fetch("/api/contact").then((res) => res.json()),
             fetch("/api/projects").then((res) => res.json()),
+            fetch("/api/blog").then((res) => res.json()).catch(() => []), // Added catch for blog incase it's not setup yet
         ])
-            .then(([contactsData, projectsData]) => {
+            .then(([contactsData, projectsData, blogData]) => {
                 setContacts(contactsData);
                 setProjects(projectsData);
+                setBlogPosts(Array.isArray(blogData) ? blogData : []);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -98,6 +124,16 @@ export default function DashboardPage() {
             setImageUrls([]);
         }
     }, [editingProject]);
+
+    useEffect(() => {
+        if (editingBlogPost) {
+            setBlogTags(editingBlogPost.tags || []);
+            setBlogImageUrl(editingBlogPost.image || "");
+        } else {
+            setBlogTags([]);
+            setBlogImageUrl("");
+        }
+    }, [editingBlogPost]);
 
     const totalNew = contacts.filter((c) => c.status === "nuevo").length;
 
@@ -142,6 +178,30 @@ export default function DashboardPage() {
         }
     };
 
+    const handleBlogFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        setUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append("files", files[0]); // Only allow 1 image for blog post main image
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await res.json();
+            if (data.urls && data.urls.length > 0) {
+                setBlogImageUrl(data.urls[0]);
+            }
+        } catch (err) {
+            console.error("Error uploading file:", err);
+            alert("Error al subir la imagen. Intenta de nuevo.");
+        } finally {
+            setUploading(false);
+            if (blogFileInputRef.current) blogFileInputRef.current.value = "";
+        }
+    };
+
     const toggleFeature = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
             setSelectedFeatures(selectedFeatures.filter((f) => f !== feature));
@@ -154,6 +214,21 @@ export default function DashboardPage() {
         if (customFeature.trim() && !selectedFeatures.includes(customFeature.trim())) {
             setSelectedFeatures([...selectedFeatures, customFeature.trim()]);
             setCustomFeature("");
+        }
+    };
+
+    const toggleBlogTag = (tag: string) => {
+        if (blogTags.includes(tag)) {
+            setBlogTags(blogTags.filter((t) => t !== tag));
+        } else {
+            setBlogTags([...blogTags, tag]);
+        }
+    };
+
+    const addCustomBlogTag = () => {
+        if (blogCustomTag.trim() && !blogTags.includes(blogCustomTag.trim())) {
+            setBlogTags([...blogTags, blogCustomTag.trim()]);
+            setBlogCustomTag("");
         }
     };
 
@@ -221,6 +296,67 @@ export default function DashboardPage() {
     const handleEditProject = (project: Project) => {
         setEditingProject(project);
         setShowProjectForm(true);
+    };
+
+    const handleSaveBlogPost = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const form = new FormData(e.currentTarget);
+
+        const postData = {
+            id: editingBlogPost?.id, // Will be generated in backend if undefined
+            title: form.get("title") as string,
+            excerpt: form.get("excerpt") as string,
+            content: form.get("content") as string,
+            author: form.get("author") as string || "S3 Construcciones",
+            date: form.get("date") as string || new Date().toISOString().split('T')[0],
+            category: form.get("category") as string,
+            tags: blogTags,
+            readTime: parseInt(form.get("readTime") as string) || 5, // Default 5 mins
+            image: blogImageUrl || "/uploads/placeholder.jpg",
+        };
+
+        if (editingBlogPost) {
+            // Update existing
+            const updatedPosts = blogPosts.map((p) =>
+                p.id === editingBlogPost.id ? { ...p, ...postData } as BlogPost : p
+            );
+            setBlogPosts(updatedPosts);
+            await fetch("/api/blog", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedPosts),
+            });
+        } else {
+            // Create new
+            const res = await fetch("/api/blog", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(postData),
+            });
+            const result = await res.json();
+            setBlogPosts([{ ...postData, id: result.id } as BlogPost, ...blogPosts]);
+        }
+
+        setShowBlogForm(false);
+        setEditingBlogPost(null);
+        setBlogTags([]);
+        setBlogImageUrl("");
+    };
+
+    const handleDeleteBlogPost = async (id: string) => {
+        if (!confirm("¿Estás seguro de eliminar este artículo del blog?")) return;
+        const updated = blogPosts.filter((p) => p.id !== id);
+        setBlogPosts(updated);
+        await fetch("/api/blog", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updated),
+        });
+    };
+
+    const handleEditBlogPost = (post: BlogPost) => {
+        setEditingBlogPost(post);
+        setShowBlogForm(true);
     };
 
     const styles = {
@@ -466,6 +602,14 @@ export default function DashboardPage() {
                     >
                         <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <FolderOpen size={16} /> Proyectos
+                        </span>
+                    </button>
+                    <button
+                        style={styles.tab(activeTab === "blog")}
+                        onClick={() => setActiveTab("blog")}
+                    >
+                        <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <FileText size={16} /> Blog
                         </span>
                     </button>
                 </div>
@@ -1027,6 +1171,356 @@ export default function DashboardPage() {
                                 >
                                     <Save size={18} />
                                     {editingProject ? "Guardar Cambios" : "Crear Proyecto"}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* ===== BLOG TAB ===== */}
+                {activeTab === "blog" && (
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+                            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", fontWeight: 700 }}>
+                                Artículos del Blog
+                            </h2>
+                            <button
+                                onClick={() => {
+                                    setEditingBlogPost(null);
+                                    setShowBlogForm(true);
+                                }}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 8,
+                                    padding: "10px 24px",
+                                    background: "var(--gradient-gold)",
+                                    color: "#050507",
+                                    borderRadius: 100,
+                                    fontWeight: 700,
+                                    fontSize: "0.88rem",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    boxShadow: "var(--shadow-glow)",
+                                }}
+                            >
+                                <Plus size={18} /> Nuevo Artículo
+                            </button>
+                        </div>
+
+                        {blogPosts.length === 0 ? (
+                            <div
+                                style={{
+                                    background: "var(--bg-card)",
+                                    border: "1px solid var(--border-color)",
+                                    borderRadius: "var(--radius-lg)",
+                                    padding: 60,
+                                    textAlign: "center",
+                                    color: "var(--text-muted)",
+                                }}
+                            >
+                                <FileText size={48} style={{ marginBottom: 16, opacity: 0.3 }} />
+                                <p>No hay artículos. Crea tu primera publicación para el blog.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                                {blogPosts.map((p) => (
+                                    <div key={p.id} style={styles.projectCard}>
+                                        <div
+                                            style={{
+                                                width: 100,
+                                                height: 80,
+                                                borderRadius: "var(--radius-sm)",
+                                                background: p.image
+                                                    ? `url(${p.image}) center/cover`
+                                                    : "linear-gradient(135deg, var(--bg-secondary), var(--bg-card))",
+                                                flexShrink: 0,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                color: "var(--text-muted)",
+                                            }}
+                                        >
+                                            {!p.image && <FileText size={28} style={{ opacity: 0.3 }} />}
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: 4 }}>
+                                                {p.title}
+                                            </h3>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: 12,
+                                                    color: "var(--text-muted)",
+                                                    fontSize: "0.8rem",
+                                                    marginBottom: 6,
+                                                }}
+                                            >
+                                                <span style={{ color: "var(--accent)" }}>{p.category}</span>
+                                                <span>•</span>
+                                                <span>{p.date}</span>
+                                            </div>
+                                            <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                                                {p.excerpt}
+                                            </p>
+                                        </div>
+                                        <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                                            <button
+                                                onClick={() => handleEditBlogPost(p)}
+                                                style={{
+                                                    width: 36,
+                                                    height: 36,
+                                                    borderRadius: "var(--radius-sm)",
+                                                    background: "var(--accent-subtle)",
+                                                    border: "1px solid var(--border-accent)",
+                                                    color: "var(--accent)",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                <Edit3 size={16} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteBlogPost(p.id)}
+                                                style={{
+                                                    width: 36,
+                                                    height: 36,
+                                                    borderRadius: "var(--radius-sm)",
+                                                    background: "rgba(239,68,68,0.1)",
+                                                    border: "1px solid rgba(239,68,68,0.3)",
+                                                    color: "#ef4444",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* ===== BLOG POST FORM MODAL ===== */}
+                {showBlogForm && (
+                    <div style={styles.formOverlay} onClick={() => setShowBlogForm(false)}>
+                        <div style={styles.formCard} onClick={(e) => e.stopPropagation()}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+                                <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.3rem", fontWeight: 700 }}>
+                                    {editingBlogPost ? "Editar Artículo" : "Nuevo Artículo"}
+                                </h2>
+                                <button
+                                    onClick={() => setShowBlogForm(false)}
+                                    style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                                >
+                                    <X size={22} />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleSaveBlogPost}>
+                                <div style={{ marginBottom: 20 }}>
+                                    <label style={styles.label}>Título del artículo *</label>
+                                    <input
+                                        name="title"
+                                        type="text"
+                                        required
+                                        placeholder="Ej: Costos de construcción en Cali..."
+                                        defaultValue={editingBlogPost?.title || ""}
+                                        style={styles.input}
+                                    />
+                                </div>
+                                <div style={{ marginBottom: 20 }}>
+                                    <label style={styles.label}>Extracto (Resumen) *</label>
+                                    <textarea
+                                        name="excerpt"
+                                        required
+                                        placeholder="Breve resumen que aparece en las tarjetas..."
+                                        defaultValue={editingBlogPost?.excerpt || ""}
+                                        rows={2}
+                                        style={{ ...styles.input, resize: "vertical" as const }}
+                                    />
+                                </div>
+                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+                                    <div>
+                                        <label style={styles.label}>Categoría *</label>
+                                        <input
+                                            name="category"
+                                            type="text"
+                                            required
+                                            placeholder="Ej: Guías de Precios"
+                                            defaultValue={editingBlogPost?.category || ""}
+                                            style={styles.input}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={styles.label}>Autor</label>
+                                        <input
+                                            name="author"
+                                            type="text"
+                                            placeholder="S3 Construcciones"
+                                            defaultValue={editingBlogPost?.author || "S3 Construcciones"}
+                                            style={styles.input}
+                                        />
+                                    </div>
+                                </div>
+                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+                                    <div>
+                                        <label style={styles.label}>Fecha (YYYY-MM-DD)</label>
+                                        <input
+                                            name="date"
+                                            type="date"
+                                            defaultValue={editingBlogPost?.date || new Date().toISOString().split('T')[0]}
+                                            style={styles.input}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={styles.label}>Tiempo de lectura (min.) *</label>
+                                        <input
+                                            name="readTime"
+                                            type="number"
+                                            required
+                                            min="1"
+                                            defaultValue={editingBlogPost?.readTime || 5}
+                                            style={styles.input}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Tags Selector */}
+                                <div style={{ marginBottom: 24 }}>
+                                    <label style={styles.label}>Etiquetas</label>
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+                                        {blogTags.map((tag) => (
+                                            <span key={tag} style={styles.featureChip(true)} onClick={() => toggleBlogTag(tag)}>
+                                                {tag} <X size={12} style={{ marginLeft: 4 }} />
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <div style={{ display: "flex", gap: 8 }}>
+                                        <input
+                                            type="text"
+                                            value={blogCustomTag}
+                                            onChange={(e) => setBlogCustomTag(e.target.value)}
+                                            placeholder="Añadir etiqueta..."
+                                            style={styles.input}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    addCustomBlogTag();
+                                                }
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={addCustomBlogTag}
+                                            style={{
+                                                padding: "0 16px",
+                                                background: "var(--bg-secondary)",
+                                                border: "1px solid var(--border-color)",
+                                                borderRadius: "var(--radius-sm)",
+                                                cursor: "pointer",
+                                                color: "var(--text-primary)",
+                                            }}
+                                        >
+                                            <Plus size={18} />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Content Markdown */}
+                                <div style={{ marginBottom: 24 }}>
+                                    <label style={styles.label}>Contenido (Formato Markdown) *</label>
+                                    <textarea
+                                        name="content"
+                                        required
+                                        placeholder="Escribe el contenido aquí. Usa ## para subtítulos, - para listas, **texto** para negritas..."
+                                        defaultValue={editingBlogPost?.content || ""}
+                                        rows={12}
+                                        style={{ ...styles.input, resize: "vertical" as const, fontFamily: "monospace" }}
+                                    />
+                                    <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 6 }}>
+                                        Soporta Markdown básico (## Título, - Lista, **Negrita**, etc). Usa saltos de línea dobles para separar párrafos.
+                                    </p>
+                                </div>
+
+                                {/* Blog Image URL */}
+                                <div style={{ marginBottom: 28 }}>
+                                    <label style={styles.label}>Imagen del Artículo *</label>
+                                    <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+                                        <input
+                                            type="text"
+                                            value={blogImageUrl}
+                                            onChange={(e) => setBlogImageUrl(e.target.value)}
+                                            placeholder="URL de imagen o sube desde el PC"
+                                            style={styles.input}
+                                            readOnly={blogImageUrl.startsWith("/uploads/")}
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => blogFileInputRef.current?.click()}
+                                            disabled={uploading}
+                                            style={{
+                                                padding: "0 16px",
+                                                background: "var(--accent-subtle)",
+                                                border: "1px solid var(--border-accent)",
+                                                borderRadius: "var(--radius-sm)",
+                                                color: "var(--accent)",
+                                                cursor: uploading ? "wait" : "pointer",
+                                                whiteSpace: "nowrap",
+                                                fontSize: "0.85rem",
+                                                fontWeight: 600
+                                            }}
+                                        >
+                                            {uploading ? "..." : <Upload size={16} />}
+                                        </button>
+                                        <input
+                                            ref={blogFileInputRef}
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleBlogFileUpload}
+                                            style={{ display: "none" }}
+                                        />
+                                    </div>
+                                    {blogImageUrl && (
+                                        <div style={{
+                                            width: "100%",
+                                            height: 180,
+                                            borderRadius: "var(--radius-sm)",
+                                            background: `url(${blogImageUrl}) center/cover`,
+                                            border: "1px solid var(--border-color)",
+                                        }} />
+                                    )}
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    style={{
+                                        width: "100%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        gap: 8,
+                                        padding: "14px 32px",
+                                        background: "var(--gradient-gold)",
+                                        color: "#050507",
+                                        borderRadius: 100,
+                                        fontWeight: 700,
+                                        fontSize: "0.95rem",
+                                        border: "none",
+                                        cursor: "pointer",
+                                        boxShadow: "var(--shadow-glow)",
+                                    }}
+                                >
+                                    <Save size={18} />
+                                    {editingBlogPost ? "Guardar Artículo" : "Publicar Artículo"}
                                 </button>
                             </form>
                         </div>
