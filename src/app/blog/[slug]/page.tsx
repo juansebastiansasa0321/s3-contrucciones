@@ -12,6 +12,8 @@ interface BlogPostPageProps {
     params: Promise<{ slug: string }>;
 }
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
     const { rows } = await pool.query('SELECT id FROM blog_posts');
     return rows.map((post: { id: string }) => ({ slug: post.id }));
