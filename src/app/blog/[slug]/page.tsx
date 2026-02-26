@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import blogData from "@/data/blog.json";
+import pool from "@/lib/db";
 import { Clock, ArrowLeft, Calendar, Tag, MessageCircle } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -13,12 +13,14 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-    return blogData.map((post) => ({ slug: post.id }));
+    const { rows } = await pool.query('SELECT id FROM blog_posts');
+    return rows.map((post: { id: string }) => ({ slug: post.id }));
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
     const { slug } = await params;
-    const post = blogData.find((p) => p.id === slug);
+    const { rows } = await pool.query('SELECT * FROM blog_posts WHERE id = $1', [slug]);
+    const post = rows[0];
     if (!post) return { title: "Blog | S3 Remodelaciones Cali" };
     return {
         title: `${post.title} | S3 Remodelaciones Cali`,
@@ -91,11 +93,12 @@ function renderContent(content: string) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
     const { slug } = await params;
-    const post = blogData.find((p) => p.id === slug);
+    const { rows: postRows } = await pool.query('SELECT * FROM blog_posts WHERE id = $1', [slug]);
+    const post = postRows[0];
 
     if (!post) notFound();
 
-    const otherPosts = blogData.filter((p) => p.id !== slug).slice(0, 2);
+    const { rows: otherPosts } = await pool.query('SELECT * FROM blog_posts WHERE id != $1 ORDER BY date DESC LIMIT 2', [slug]);
 
     const jsonLd = {
         "@context": "https://schema.org",

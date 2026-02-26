@@ -1,19 +1,8 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-
-const uploadDir = path.join(process.cwd(), "public/uploads");
-
-// Ensure upload directory exists
-function ensureDir() {
-    if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-    }
-}
+import { put } from '@vercel/blob';
 
 export async function POST(request: Request) {
     try {
-        ensureDir();
         const formData = await request.formData();
         const files = formData.getAll("files") as File[];
 
@@ -27,16 +16,8 @@ export async function POST(request: Request) {
         const urls: string[] = [];
 
         for (const file of files) {
-            const bytes = await file.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-
-            // Generate unique filename
-            const ext = path.extname(file.name) || ".jpg";
-            const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}${ext}`;
-            const filePath = path.join(uploadDir, uniqueName);
-
-            fs.writeFileSync(filePath, buffer);
-            urls.push(`/uploads/${uniqueName}`);
+            const blob = await put(file.name, file, { access: 'public' });
+            urls.push(blob.url);
         }
 
         return NextResponse.json({ success: true, urls });

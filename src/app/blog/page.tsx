@@ -3,7 +3,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import blogData from "@/data/blog.json";
+import pool from "@/lib/db";
 import { Clock, ArrowRight, Tag } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
         "Artículos sobre construcción, remodelación, precios y consejos para tu proyecto en Cali y Jamundí. Guías actualizadas por expertos.",
 };
 
-export default function BlogPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function BlogPage() {
+    const { rows: blogData } = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC');
     return (
         <>
             <Navbar />

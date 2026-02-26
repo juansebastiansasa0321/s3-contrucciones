@@ -1,11 +1,11 @@
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import ServiceCard from "@/components/ServiceCard";
 import ContactForm from "@/components/ContactForm";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import blogData from "@/data/blog.json";
+import pool from "@/lib/db";
 import {
   ArrowRight,
   Shield,
@@ -20,18 +20,22 @@ import {
 } from "lucide-react";
 
 import servicesData from "@/data/services.json";
-import projectsData from "@/data/projects.json";
+
 import testimonialsData from "@/data/testimonials.json";
 
 // Dynamic imports for below-the-fold heavy components
-const ProjectGallery = dynamic(() => import("@/components/ProjectGallery"), {
+const ProjectGallery = dynamicImport(() => import("@/components/ProjectGallery"), {
   ssr: true,
 });
-const TestimonialCarousel = dynamic(() => import("@/components/TestimonialCarousel"), {
+const TestimonialCarousel = dynamicImport(() => import("@/components/TestimonialCarousel"), {
   ssr: true,
 });
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const { rows: projectsData } = await pool.query('SELECT * FROM projects ORDER BY year DESC');
+  const { rows: blogData } = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC LIMIT 2');
   return (
     <>
       <Navbar />
@@ -323,7 +327,7 @@ export default function Home() {
             </p>
           </div>
           <div className="blog-grid">
-            {blogData.slice(0, 2).map((post) => (
+            {blogData.map((post) => (
               <a
                 key={post.id}
                 href={`/blog/${post.id}`}

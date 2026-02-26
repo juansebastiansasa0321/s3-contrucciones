@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import blogData from "@/data/blog.json";
+import pool from "@/lib/db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const { rows: blogData } = await pool.query('SELECT id, date FROM blog_posts');
     const baseUrl = "https://s3remodelacionescali.com.co";
 
     const blogPages = blogData.map((post) => ({

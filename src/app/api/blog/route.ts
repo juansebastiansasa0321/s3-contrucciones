@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import pool from "@/lib/db";
 
-const dataFilePath = path.join(process.cwd(), "src/data/blog.json");
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
-        const fileData = await fs.readFile(dataFilePath, "utf-8");
-        const data = JSON.parse(fileData);
-        return NextResponse.json(data);
+        const result = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC');
+        return NextResponse.json(result.rows);
     } catch (error) {
         console.error("Error reading blog data:", error);
         return NextResponse.json([], { status: 500 });
@@ -17,8 +15,6 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const fileData = await fs.readFile(dataFilePath, "utf-8");
-        const data = JSON.parse(fileData);
         const newPost = await request.json();
 
         // Generate ID from title if not provided
@@ -30,9 +26,15 @@ export async function POST(request: Request) {
                 .replace(/(^-|-$)+/g, ""); // remove leading/trailing dashes
         }
 
-        const newData = [newPost, ...data];
+        await pool.query(
+            `INSERT INTO blog_posts (id, title, excerpt, content, author, date, category, tags, "readTime", image)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+            [
+                newPost.id, newPost.title, newPost.excerpt, newPost.content, newPost.author,
+                newPost.date || new Date().toISOString().split('T')[0], newPost.category, JSON.stringify(newPost.tags || []), newPost.readTime || 5, newPost.image
+            ]
+        );
 
-        await fs.writeFile(dataFilePath, JSON.stringify(newData, null, 4));
         return NextResponse.json(newPost);
     } catch (error) {
         console.error("Error saving blog data:", error);
@@ -43,8 +45,28 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
     try {
         const updatedData = await request.json();
-        await fs.writeFile(dataFilePath, JSON.stringify(updatedData, null, 4));
-        return NextResponse.json({ success: true });
+        if (Array.isArray(updatedData)) {
+            const client = await pool.connect();
+            try {
+                await client.query('BEGIN');
+                await client.query('DELETE FROM blog_posts');
+                for (const post of updatedData) {
+                    await client.query(
+                        `INSERT INTO blog_posts (id, title, excerpt, content, author, date, category, tags, "readTime", image)
+                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+                        [post.id, post.title, post.excerpt, post.content, post.author, post.date, post.category, JSON.stringify(post.tags || []), post.readTime, post.image]
+                    );
+                }
+                await client.query('COMMIT');
+            } catch (e) {
+                await client.query('ROLLBACK');
+                throw e;
+            } finally {
+                client.release();
+            }
+            return NextResponse.json({ success: true });
+        }
+        return NextResponse.json({ error: "Expected array of blog posts" }, { status: 400 });
     } catch (error) {
         console.error("Error updating blog data:", error);
         return NextResponse.json({ error: "Error updating data" }, { status: 500 });
