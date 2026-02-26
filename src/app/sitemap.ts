@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import pool from "@/lib/db";
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { rows: blogData } = await pool.query('SELECT id, date FROM blog_posts');
     const baseUrl = "https://s3remodelacionescali.com.co";
