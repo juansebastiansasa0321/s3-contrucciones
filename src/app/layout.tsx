@@ -5,11 +5,13 @@ import "./globals.css";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export const metadata: Metadata = {
-  title: "S3 Construcciones | Construcción y Acabados en Cali y Jamundí",
+  title: "S3 Construcciones | Remodelaciones y Construcción en Cali",
   description:
     "Empresa líder en construcción de viviendas, acabados, remodelaciones y ornamentación en Cali y Jamundí, Valle del Cauca. Construcción desde cero, pisos, pintura, plomería, ornamentación y más. ¡Cotiza gratis!",
   keywords: [
+    "remodelaciones Cali",
     "construcción Cali",
+    "remodelaciones y construcción en Cali",
     "acabados Jamundí",
     "remodelación Valle del Cauca",
     "construcción viviendas Cali",
