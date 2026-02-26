@@ -85,6 +85,12 @@ export default function DashboardPage() {
     const [showBlogForm, setShowBlogForm] = useState(false);
     const [editingProject, setEditingProject] = useState<Project | null>(null);
     const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+    const showToast = (message: string) => {
+        setToastMessage(message);
+        setTimeout(() => setToastMessage(null), 4000);
+    };
 
     // Form state Projects
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
@@ -265,6 +271,7 @@ export default function DashboardPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedProjects),
             });
+            showToast("Proyecto actualizado exitosamente");
         } else {
             // Create new
             const res = await fetch("/api/projects", {
@@ -274,6 +281,7 @@ export default function DashboardPage() {
             });
             const result = await res.json();
             setProjects([...projects, { id: result.id, ...projectData }]);
+            showToast("Proyecto creado exitosamente");
         }
 
         setShowProjectForm(false);
@@ -326,6 +334,7 @@ export default function DashboardPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedPosts),
             });
+            showToast("Artículo actualizado exitosamente");
         } else {
             // Create new
             const res = await fetch("/api/blog", {
@@ -335,6 +344,7 @@ export default function DashboardPage() {
             });
             const result = await res.json();
             setBlogPosts([{ ...postData, id: result.id } as BlogPost, ...blogPosts]);
+            showToast("Artículo creado exitosamente");
         }
 
         setShowBlogForm(false);
@@ -515,6 +525,26 @@ export default function DashboardPage() {
 
     return (
         <div style={styles.page}>
+            {toastMessage && (
+                <div style={{
+                    position: "fixed",
+                    top: 24,
+                    right: 24,
+                    background: "var(--accent)",
+                    color: "#000",
+                    padding: "16px 24px",
+                    borderRadius: "var(--radius-md)",
+                    fontWeight: 600,
+                    zIndex: 9999,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                }}>
+                    <CheckCircle size={22} />
+                    {toastMessage}
+                </div>
+            )}
             <div style={styles.container}>
                 {/* Header */}
                 <div style={styles.header}>

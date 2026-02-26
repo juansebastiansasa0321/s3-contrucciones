@@ -14,10 +14,7 @@ interface BlogPostPageProps {
 
 export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-    const { rows } = await pool.query('SELECT id FROM blog_posts');
-    return rows.map((post: { id: string }) => ({ slug: post.id }));
-}
+
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
     const { slug } = await params;
