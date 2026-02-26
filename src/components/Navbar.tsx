@@ -33,7 +33,7 @@ export default function Navbar() {
                             <Building2 size={22} />
                         </span>
                         <span>
-                            S3 <span className="text-gradient">Construcciones</span>
+                            S3 <span className="text-gradient">Remodelaciones Cali</span>
                         </span>
                     </a>
 

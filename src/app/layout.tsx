@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     title: "S3 Construcciones | Construcción y Acabados en Cali y Jamundí",
     description:
       "Construimos tu hogar desde cero con acabados de primera calidad en Cali y Jamundí. ¡Más de 10 años de experiencia!",
-    url: "https://s3construcciones.com",
-    siteName: "S3 Construcciones",
+    url: "https://s3remodelacionescali.com.co",
+    siteName: "S3 Remodelaciones Cali",
     locale: "es_CO",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "S3 Construcciones | Cali y Jamundí",
+    title: "S3 Remodelaciones Cali",
     description:
       "Construcción de viviendas, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
   },
@@ -46,17 +46,17 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://s3construcciones.com",
+    canonical: "https://s3remodelacionescali.com.co",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
-  name: "S3 Construcciones",
+  name: "S3 Remodelaciones Cali",
   description:
     "Empresa líder en construcción de viviendas, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
-  url: "https://s3construcciones.com",
+  url: "https://s3remodelacionescali.com.co",
   telephone: "+573147872392",
   address: {
     "@type": "PostalAddress",

@@ -151,7 +151,7 @@ export default function Home() {
             <div className="about-image-wrapper" style={{ position: "relative" }}>
               <Image
                 src="/uploads/1771723874388-noi7cf.jpg"
-                alt="Equipo de S3 Construcciones trabajando en obra"
+                alt="Equipo de S3 Remodelaciones Cali trabajando en obra"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 768px) 100vw, 50vw"

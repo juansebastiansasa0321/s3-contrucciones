@@ -19,9 +19,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
     const { slug } = await params;
     const post = blogData.find((p) => p.id === slug);
-    if (!post) return {};
+    if (!post) return { title: "Blog | S3 Remodelaciones Cali" };
     return {
-        title: `${post.title} | S3 Construcciones`,
+        title: `${post.title} | S3 Remodelaciones Cali`,
         description: post.excerpt,
         openGraph: {
             title: post.title,
@@ -102,20 +102,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         "@type": "Article",
         headline: post.title,
         description: post.excerpt,
-        image: `https://s3construcciones.com${post.image}`,
-        datePublished: new Date(post.date).toISOString(),
+        image: `https://s3remodelacionescali.com.co${post.image}`,
         author: {
             "@type": "Person",
             name: post.author,
         },
         publisher: {
             "@type": "Organization",
-            name: "S3 Construcciones",
+            name: "S3 Remodelaciones Cali",
             logo: {
                 "@type": "ImageObject",
-                url: "https://s3construcciones.com/favicon.ico",
+                url: "https://s3remodelacionescali.com.co/favicon.ico",
             },
         },
+        datePublished: post.date,
     };
 
     return (

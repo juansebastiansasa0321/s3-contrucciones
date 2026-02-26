@@ -45,7 +45,7 @@ async function sendEmailNotification(contact: {
             body: JSON.stringify({
                 access_key: WEB3FORMS_KEY,
                 subject: `🏗️ Nueva Cotización: ${contact.service} - ${contact.name}`,
-                from_name: "S3 Construcciones Web",
+                from_name: "S3 Remodelaciones Cali Web",
                 to: OWNER_EMAIL,
                 name: contact.name,
                 phone: contact.phone,

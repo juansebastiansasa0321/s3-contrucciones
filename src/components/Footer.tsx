@@ -8,7 +8,7 @@ export default function Footer() {
                     <div className="footer-brand">
                         <h3>
                             S3{" "}
-                            <span className="text-gradient">Construcciones</span>
+                            <span className="text-gradient">Remodelaciones Cali</span>
                         </h3>
                         <p>
                             Más de 10 años construyendo hogares de calidad en Cali y Jamundí.
@@ -59,7 +59,7 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; {new Date().getFullYear()} S3 Construcciones. Todos los derechos reservados.</p>
+                    <p>&copy; {new Date().getFullYear()} S3 Remodelaciones Cali. Todos los derechos reservados.</p>
                     <p>Cali & Jamundí, Valle del Cauca, Colombia</p>
                 </div>
             </div>

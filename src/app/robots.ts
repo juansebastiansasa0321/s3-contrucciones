@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: "/",
             disallow: ["/dashboard", "/api/"],
         },
-        sitemap: "https://s3construcciones.com/sitemap.xml",
+        sitemap: "https://s3remodelacionescali.com.co/sitemap.xml",
     };
 }

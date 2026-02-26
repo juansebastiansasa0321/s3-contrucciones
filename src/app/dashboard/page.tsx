@@ -307,7 +307,7 @@ export default function DashboardPage() {
             title: form.get("title") as string,
             excerpt: form.get("excerpt") as string,
             content: form.get("content") as string,
-            author: form.get("author") as string || "S3 Construcciones",
+            author: form.get("author") as string || "S3 Remodelaciones Cali",
             date: form.get("date") as string || new Date().toISOString().split('T')[0],
             category: form.get("category") as string,
             tags: blogTags,
@@ -1364,8 +1364,8 @@ export default function DashboardPage() {
                                         <input
                                             name="author"
                                             type="text"
-                                            placeholder="S3 Construcciones"
-                                            defaultValue={editingBlogPost?.author || "S3 Construcciones"}
+                                            placeholder="S3 Remodelaciones Cali"
+                                            defaultValue={editingBlogPost?.author || "S3 Remodelaciones Cali"}
                                             style={styles.input}
                                         />
                                     </div>
