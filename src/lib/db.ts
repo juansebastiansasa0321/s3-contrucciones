@@ -1,11 +1,12 @@
-import { createPool, VercelPool } from '@vercel/postgres';
+import { Pool } from 'pg';
 
-let poolInstance: VercelPool | null = null;
+let poolInstance: Pool | null = null;
 
 function getPool() {
     if (!poolInstance) {
-        poolInstance = createPool({
+        poolInstance = new Pool({
             connectionString: process.env.POSTGRES_URL || "postgres://dummy:dummy@dummy/dummy",
+            ssl: { rejectUnauthorized: false } // Required for Prisma DBs from non-Vercel endpoints
         });
     }
     return poolInstance;
