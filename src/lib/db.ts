@@ -1,6 +1,7 @@
-import { Pool } from 'pg';
+import pg from 'pg';
+const { Pool } = pg;
 
-let poolInstance: Pool | null = null;
+let poolInstance: pg.Pool | null = null;
 
 function getPool() {
     if (!poolInstance) {
