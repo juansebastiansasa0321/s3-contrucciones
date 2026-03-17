@@ -61,8 +61,6 @@ export async function PUT(request: Request) {
             } catch (e) {
                 await client.query('ROLLBACK');
                 throw e;
-            } finally {
-                client.release();
             }
             return NextResponse.json({ success: true });
         }

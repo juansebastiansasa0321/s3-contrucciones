@@ -1,17 +1,4 @@
-import pg from 'pg';
-const { Pool } = pg;
-
-let poolInstance: pg.Pool | null = null;
-
-function getPool() {
-    if (!poolInstance) {
-        poolInstance = new Pool({
-            connectionString: process.env.POSTGRES_URL || "postgres://dummy:dummy@dummy/dummy",
-            ssl: { rejectUnauthorized: false } // Required for Prisma DBs from non-Vercel endpoints
-        });
-    }
-    return poolInstance;
-}
+import { sql } from '@vercel/postgres';
 
 const pool = {
     query: async (text: string, params?: any[]) => {
@@ -20,13 +7,17 @@ const pool = {
             console.warn("Skipping DB query during build phase (POSTGRES_URL not found)");
             return { rows: [], fields: [], rowCount: 0, command: '', oid: 0 };
         }
-        return getPool().query(text, params);
+        
+        // Convert $1, $2 to Vercel Postgres template literal or simply run query
+        // Vercel postgres sql uses tagged template literals, so we need to pass parameters correctly
+        // Since we are wrapping it, we can use sql.query which acts like standard pg.query
+        return sql.query(text, params);
     },
     connect: async () => {
         if (!process.env.POSTGRES_URL) {
             throw new Error("Cannot connect to DB: POSTGRES_URL is missing");
         }
-        return getPool().connect();
+        return sql;
     }
 };
 
