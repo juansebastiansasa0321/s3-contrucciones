@@ -34,10 +34,30 @@ const TestimonialCarousel = dynamicImport(() => import("@/components/Testimonial
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const { rows: projectsData } = await pool.query('SELECT * FROM projects ORDER BY year DESC');
-  const { rows: blogData } = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC LIMIT 2');
+  let projectsData: any[] = [];
+  let blogData: any[] = [];
+  let dbError: string | null = null;
+
+  try {
+    const pRes = await pool.query('SELECT * FROM projects ORDER BY year DESC');
+    projectsData = pRes.rows;
+
+    const bRes = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC LIMIT 2');
+    blogData = bRes.rows;
+  } catch (err: any) {
+    console.error("DB Query Error:", err);
+    dbError = err.message || JSON.stringify(err);
+  }
+
   return (
     <>
+      {dbError && (
+        <div style={{ padding: '20px', background: '#dc2626', color: 'white', position: 'relative', zIndex: 9999 }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '10px' }}>Database Error (Debug Mode)</h2>
+          <p>{dbError}</p>
+          <pre style={{ marginTop: '10px', fontSize: '12px' }}>Env POSTGRES_URL is {process.env.POSTGRES_URL ? "SET" : "MISSING"}</pre>
+        </div>
+      )}
       <Navbar />
 
       {/* ===== HERO ===== */}
