@@ -1,22 +1,19 @@
 import pg from 'pg';
 const { Pool } = pg;
 
-// Use standard PG on Vercel Node.js Serverless Functions
 let poolInstance: pg.Pool | null = null;
 
 function getPool() {
     if (!poolInstance) {
-        let connString = process.env.POSTGRES_URL || "postgres://dummy:dummy@dummy/dummy";
+        // Vercel Edge functions sometimes fail to resolve 'db.prisma.io' (getaddrinfo ENOTFOUND)
+        // To bypass DNS completely on Vercel, we can replace the host with its direct IP.
         
-        // Ensure Prisma Data Proxy connections use pgbouncer if not present
-        if (connString.includes('prisma.io') && !connString.includes('pgbouncer')) {
-             if (connString.includes('?')) {
-                 connString += '&pgbouncer=true';
-             } else {
-                 connString += '?pgbouncer=true';
-             }
+        let connString = process.env.POSTGRES_URL || "";
+        
+        if (connString.includes('db.prisma.io')) {
+            connString = connString.replace('db.prisma.io', '66.135.0.131');
         }
-
+        
         poolInstance = new Pool({
             connectionString: connString,
             ssl: { rejectUnauthorized: false },
