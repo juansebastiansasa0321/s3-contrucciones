@@ -5,58 +5,56 @@ import "./globals.css";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export const metadata: Metadata = {
-  title: "S3 Construcciones | Remodelaciones y Construcción en Cali",
+  title: "Maestros & Remodelaciones Cali - Jamundí | Construcción Profesional",
   description:
-    "Empresa líder en construcción de viviendas, acabados, remodelaciones y ornamentación en Cali y Jamundí, Valle del Cauca. Construcción desde cero, pisos, pintura, plomería, ornamentación y más. ¡Cotiza gratis!",
+    "Expertos en construcción, remodelaciones, acabados y obra blanca en Cali y Jamundí. Maestros de obra profesionales, pintura, plomería y ornamentación. ¡Cotiza tu proyecto hoy!",
   keywords: [
+    "maestros de obra Cali",
+    "maestros de obra Jamundí",
     "remodelaciones Cali",
-    "construcción Cali",
-    "remodelaciones y construcción en Cali",
-    "acabados Jamundí",
-    "remodelación Valle del Cauca",
-    "construcción viviendas Cali",
-    "acabados de construcción",
-    "pisos porcelanato Cali",
-    "pintura profesional Jamundí",
-    "plomería Cali",
-    "ornamentación Cali",
-    "ornamentación metálica Jamundí",
-    "constructora Cali",
     "remodelaciones Jamundí",
-    "constructor de casas Cali",
-    "empresa de construcción Valle del Cauca",
+    "construcción Cali",
+    "acabados de construcción Cali",
+    "obra blanca Cali",
+    "albañiles Cali",
+    "empresa de remodelaciones Valle del Cauca",
+    "pintura y yeso Cali",
+    "plomería profesional Cali",
+    "ornamentación metálica Jamundí",
+    "arreglos locativos Cali",
+    "construcción de casas Jamundí",
   ],
   openGraph: {
-    title: "S3 Construcciones | Construcción y Acabados en Cali y Jamundí",
+    title: "Maestros & Remodelaciones Cali - Jamundí",
     description:
-      "Construimos tu hogar desde cero con acabados de primera calidad en Cali y Jamundí. ¡Más de 10 años de experiencia!",
-    url: "https://s3remodelacionescali.com.co",
-    siteName: "S3 Remodelaciones Cali",
+      "Construimos y remodelamos tu hogar con acabados de primera calidad en Cali y Jamundí. Maestros de obra con experiencia comprobada.",
+    url: "https://www.s3contrucciones.com",
+    siteName: "Maestros & Remodelaciones Cali - Jamundí",
     locale: "es_CO",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "S3 Remodelaciones Cali",
+    title: "Maestros & Remodelaciones Cali - Jamundí",
     description:
-      "Construcción de viviendas, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
+      "Expertos en construcción, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
   },
   robots: {
     index: true,
     follow: true,
   },
   alternates: {
-    canonical: "https://s3remodelacionescali.com.co",
+    canonical: "https://www.s3contrucciones.com",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
-  name: "S3 Remodelaciones Cali",
+  name: "Maestros & Remodelaciones Cali - Jamundí",
   description:
-    "Empresa líder en construcción de viviendas, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
-  url: "https://s3remodelacionescali.com.co",
+    "Maestros de obra expertos en construcción de viviendas, acabados, obra blanca y remodelaciones integrales en Cali y Jamundí, Valle del Cauca.",
+  url: "https://www.s3contrucciones.com",
   telephone: "+573147872392",
   address: {
     "@type": "PostalAddress",

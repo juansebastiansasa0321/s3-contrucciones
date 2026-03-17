@@ -29,10 +29,12 @@ export default function Navbar() {
         <>
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container navbar-inner">
-                    <a href="#inicio" className="navbar-logo" style={{ gap: '12px' }}>
-                        <Image src="/logo.png" alt="S3 Remodelaciones Logo" width={44} height={44} style={{ borderRadius: '8px', objectFit: 'contain' }} />
-                        <span style={{ fontSize: '1.25rem' }}>
-                            S3 <span className="text-gradient">Remodelaciones</span>
+                    <a href="#inicio" className="navbar-logo" style={{ display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'flex-start' }}>
+                        <span style={{ fontSize: '1.4rem', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
+                            Maestros & <span className="text-gradient">Remodelaciones</span>
+                        </span>
+                        <span style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+                            Cali <span style={{color: 'var(--text-muted)'}}>•</span> Jamundí
                         </span>
                     </a>
 

@@ -64,15 +64,13 @@ export default async function Home() {
             </div>
 
             <h1 className="heading-xl">
-              Construimos el hogar{" "}
-              <span className="text-gradient">de tus sueños</span>
+              Tus Maestros de Obra{" "}
+              <span className="text-gradient">de confianza</span>
             </h1>
 
             <p>
-              Somos expertos en construcción de viviendas, acabados,
-              remodelaciones y ornamentación en <strong>Cali y Jamundí</strong>,
-              Valle del Cauca. Desde la primera piedra hasta el último detalle,
-              hacemos realidad tu proyecto.
+              Somos especialistas en <strong>remodelaciones, acabados, obra blanca y ornamentación</strong> en Cali y Jamundí, Valle del Cauca.
+              Un equipo de maestros de obra profesionales listos para transformar y hacer realidad tu proyecto residencial o comercial.
             </p>
 
             <div className="hero-actions">
@@ -179,18 +177,15 @@ export default async function Home() {
               </span>
               <h2 className="heading-lg">
                 Más de <span className="text-gradient">10 años</span>{" "}
-                construyendo sueños
+                de experiencia en la obra
               </h2>
               <p>
-                Somos una empresa de construcción con sede en Cali, Valle del
-                Cauca, especializada en la construcción de viviendas
-                residenciales, acabados de alta calidad y ornamentación en Cali y Jamundí.
+                Somos un equipo de <strong>maestros de obra y especialistas en remodelaciones</strong> con sede en Cali.
+                Ejecutamos proyectos de construcción residencial y comercial en Cali, Jamundí y el Valle del Cauca, ofreciendo mano de obra calificada.
               </p>
               <p>
-                Nuestro equipo de profesionales cuenta con amplia experiencia
-                en todos los aspectos de la construcción: desde la obra gris
-                hasta los acabados más finos, incluyendo ornamentación metálica.
-                Nos caracterizamos por la puntualidad, calidad y transparencia.
+                Desde la albañilería tradicional, instalación de pisos, obra blanca, hasta acabados finos y ornamentación metálica.
+                Nos caracterizamos por nuestra honestidad, puntualidad y resultados duraderos que transforman espacios.
               </p>
               <div className="about-features">
                 <div className="about-feature-item">

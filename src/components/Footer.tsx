@@ -7,11 +7,13 @@ export default function Footer() {
             <div className="container">
                 <div className="footer-grid">
                     <div className="footer-brand">
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
-                            <Image src="/logo.png" alt="S3 Remodelaciones Logo" width={56} height={56} style={{ borderRadius: "8px", objectFit: "contain", background: "white", padding: "4px" }} />
-                            <h3 style={{ margin: 0, fontSize: "1.4rem" }}>
-                                S3 <span className="text-gradient">Remodelaciones</span>
-                            </h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'flex-start', marginBottom: '16px' }}>
+                            <span style={{ fontSize: '1.6rem', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
+                                Maestros & <span className="text-gradient">Remodelaciones</span>
+                            </span>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+                                Cali <span style={{color: 'var(--text-muted)'}}>•</span> Jamundí
+                            </span>
                         </div>
                         <p>
                             Más de 10 años construyendo hogares de calidad en Cali y Jamundí.
@@ -62,8 +64,8 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; {new Date().getFullYear()} S3 Remodelaciones Cali. Todos los derechos reservados.</p>
-                    <p>Cali & Jamundí, Valle del Cauca, Colombia</p>
+                    <p>&copy; {new Date().getFullYear()} Maestros & Remodelaciones Cali - Jamundí. Todos los derechos reservados.</p>
+                    <p>Valle del Cauca, Colombia</p>
                 </div>
             </div>
         </footer>
