@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Enable powered-by header removal for security
   poweredByHeader: false,
+  serverExternalPackages: ["pg"],
 };
 
 export default nextConfig;
