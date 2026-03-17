@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Building2, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const navLinks = [
     { label: "Inicio", href: "/#inicio" },
@@ -28,12 +29,10 @@ export default function Navbar() {
         <>
             <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
                 <div className="container navbar-inner">
-                    <a href="#inicio" className="navbar-logo">
-                        <span className="logo-icon">
-                            <Building2 size={22} />
-                        </span>
-                        <span>
-                            S3 <span className="text-gradient">Remodelaciones Cali</span>
+                    <a href="#inicio" className="navbar-logo" style={{ gap: '12px' }}>
+                        <Image src="/logo.png" alt="S3 Remodelaciones Logo" width={44} height={44} style={{ borderRadius: '8px', objectFit: 'contain' }} />
+                        <span style={{ fontSize: '1.25rem' }}>
+                            S3 <span className="text-gradient">Remodelaciones</span>
                         </span>
                     </a>
 

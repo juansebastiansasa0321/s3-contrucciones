@@ -1,4 +1,5 @@
-import { Building2, Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
     return (
@@ -6,10 +7,12 @@ export default function Footer() {
             <div className="container">
                 <div className="footer-grid">
                     <div className="footer-brand">
-                        <h3>
-                            S3{" "}
-                            <span className="text-gradient">Remodelaciones Cali</span>
-                        </h3>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
+                            <Image src="/logo.png" alt="S3 Remodelaciones Logo" width={56} height={56} style={{ borderRadius: "8px", objectFit: "contain", background: "white", padding: "4px" }} />
+                            <h3 style={{ margin: 0, fontSize: "1.4rem" }}>
+                                S3 <span className="text-gradient">Remodelaciones</span>
+                            </h3>
+                        </div>
                         <p>
                             Más de 10 años construyendo hogares de calidad en Cali y Jamundí.
                             Desde la primera piedra hasta el último detalle.
