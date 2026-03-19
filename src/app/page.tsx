@@ -179,7 +179,7 @@ export default async function Home() {
       </section>
 
       {/* ===== PROYECTOS ===== */}
-      <section id="proyectos" className="section section-accent">
+      <section id="proyectos" className="section">
         <div className="container">
           <div className="section-header">
             <span className="label">Portafolio</span>
@@ -215,7 +215,7 @@ export default async function Home() {
       </section>
 
       {/* ===== AREA DE SERVICIO ===== */}
-      <section className="section">
+      <section className="section section-accent">
         <div className="container">
           <div className="section-header">
             <span className="label">Cobertura</span>
@@ -337,7 +337,7 @@ export default async function Home() {
       {/* ===== CONTACTO ===== */}
       <section
         id="contacto"
-        className="section section-alt"
+        className="section section-accent"
       >
         <div className="container">
           <div className="contact-grid">

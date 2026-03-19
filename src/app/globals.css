@@ -4,7 +4,7 @@
 :root {
   /* Colors - Navy/Gray/White Theme ("Maestros de Obra" - Stability & Cleanliness) */
   --bg-primary: #0a1128;
-  --bg-secondary: #0f172a;
+  --bg-secondary: #131c31; /* Slightly lighter for better section contrast */
   --bg-card: #141e33;
   --bg-card-hover: #1b2641;
   --bg-glass: rgba(10, 17, 40, 0.7);
@@ -169,8 +169,8 @@ h6 {
   background-color: var(--bg-secondary);
   background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.12); /* Stronger visible divider */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
 }
 
