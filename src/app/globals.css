@@ -1372,6 +1372,35 @@ h6 {
   transform: translateY(0);
 }
 
+/* ===== SWIPE INDICATORS ===== */
+.swipe-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.swipe-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.swipe-dot.active {
+  background: var(--accent);
+  width: 24px;
+  border-radius: 100px;
+}
+
+@media (min-width: 769px) {
+  .swipe-indicator {
+    display: none;
+  }
+}
+
 /* ===== PROJECT CARD CLICKABLE ===== */
 .project-card-clickable {
   cursor: pointer;
@@ -1898,12 +1927,15 @@ h6 {
 }
 
 .blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 32px;
 }
 
 .blog-card {
+  flex: 1 1 320px;
+  max-width: 400px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);

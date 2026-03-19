@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import ProjectModal from "./ProjectModal";
+import SwipeIndicator from "./SwipeIndicator";
 
 interface Project {
     id: string;
@@ -33,7 +34,7 @@ export default function ProjectGallery({ projects }: ProjectGalleryProps) {
 
     return (
         <>
-            <div className="projects-grid">
+            <div className="projects-grid" id="projects-carousel">
                 {projects.map((project, index) => (
                     <div
                         key={project.id}
@@ -71,6 +72,7 @@ export default function ProjectGallery({ projects }: ProjectGalleryProps) {
                     </div>
                 ))}
             </div>
+            <SwipeIndicator containerId="projects-carousel" itemCount={projects.length} />
 
             {selectedProject && (
                 <ProjectModal

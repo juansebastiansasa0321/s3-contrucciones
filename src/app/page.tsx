@@ -5,6 +5,7 @@ import ContactForm from "@/components/ContactForm";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import SwipeIndicator from "@/components/SwipeIndicator";
 import pool from "@/lib/db";
 import {
   ArrowRight,
@@ -122,7 +123,7 @@ export default async function Home() {
               ornamentación. Desde viviendas completas hasta trabajos especializados.
             </p>
           </div>
-          <div className="services-grid">
+          <div className="services-grid" id="services-carousel">
             {servicesData.map(
               (
                 service: {
@@ -143,70 +144,37 @@ export default async function Home() {
               )
             )}
           </div>
+          <SwipeIndicator containerId="services-carousel" itemCount={servicesData.length} />
         </div>
       </section>
 
-      {/* ===== SOBRE NOSOTROS ===== */}
+      {/* ===== SOBRE NOSOTROS (RESUMEN) ===== */}
       <section id="nosotros" className="section section-alt">
-        <div className="container">
-          <div className="about-grid">
-            <div className="about-image-wrapper" style={{ position: "relative" }}>
-              <Image
-                src="/uploads/1771723874388-noi7cf.jpg"
-                alt="Equipo de S3 Remodelaciones Cali trabajando en obra"
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="about-text">
-              <span className="label" style={{
-                display: "inline-block",
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "var(--accent)",
-                marginBottom: 16,
-                padding: "6px 16px",
-                background: "var(--accent-subtle)",
-                border: "1px solid var(--border-accent)",
-                borderRadius: 100,
-              }}>
-                Sobre Nosotros
-              </span>
-              <h2 className="heading-lg">
-                Más de <span className="text-gradient">10 años</span>{" "}
-                de experiencia en la obra
-              </h2>
-              <p>
-                Somos un equipo de <strong>maestros de obra y especialistas en remodelaciones</strong> con sede en Cali.
-                Ejecutamos proyectos de construcción residencial y comercial en Cali, Jamundí y el Valle del Cauca, ofreciendo mano de obra calificada.
-              </p>
-              <p>
-                Desde la albañilería tradicional, instalación de pisos, obra blanca, hasta acabados finos y ornamentación metálica.
-                Nos caracterizamos por nuestra honestidad, puntualidad y resultados duraderos que transforman espacios.
-              </p>
-              <div className="about-features">
-                <div className="about-feature-item">
-                  <Shield size={20} />
-                  Trabajo garantizado
-                </div>
-                <div className="about-feature-item">
-                  <Clock size={20} />
-                  Entrega puntual
-                </div>
-                <div className="about-feature-item">
-                  <Award size={20} />
-                  Calidad premium
-                </div>
-                <div className="about-feature-item">
-                  <Users size={20} />
-                  Equipo profesional
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="container" style={{ textAlign: "center", maxWidth: "800px" }}>
+          <span className="label" style={{
+            display: "inline-block",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "var(--accent)",
+            marginBottom: 16,
+            padding: "6px 16px",
+            background: "var(--accent-subtle)",
+            border: "1px solid var(--border-accent)",
+            borderRadius: 100,
+          }}>
+            Sobre Nosotros
+          </span>
+          <h2 className="heading-lg" style={{ marginBottom: "20px" }}>
+            Más de <span className="text-gradient">10 años</span> construyendo en Cali
+          </h2>
+          <p style={{ color: "var(--text-secondary)", marginBottom: "32px", fontSize: "1.1rem" }}>
+            Somos un equipo de maestros de obra y especialistas en remodelaciones. Ejecutamos proyectos de construcción residencial y comercial en Cali, Jamundí y el Valle del Cauca garantizando la mejor calidad de principio a fin.
+          </p>
+          <a href="/nosotros" className="btn btn-secondary" style={{ display: "inline-flex" }}>
+            Conoce nuestra historia completa <ArrowRight size={18} style={{ marginLeft: 8 }} />
+          </a>
         </div>
       </section>
 
@@ -321,7 +289,7 @@ export default async function Home() {
               proyecto.
             </p>
           </div>
-          <div className="blog-grid">
+          <div className="blog-grid" id="blog-carousel">
             {blogData.map((post) => (
               <a
                 key={post.id}
@@ -356,6 +324,7 @@ export default async function Home() {
               </a>
             ))}
           </div>
+          <SwipeIndicator containerId="blog-carousel" itemCount={blogData.length} />
           <div style={{ textAlign: "center", marginTop: 36 }}>
             <a href="/blog" className="btn btn-secondary">
               Ver todos los artículos
