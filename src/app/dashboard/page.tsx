@@ -19,6 +19,8 @@ import {
     MapPin,
     Upload,
     FileText,
+    ArrowUp,
+    ArrowDown,
 } from "lucide-react";
 
 interface Contact {
@@ -155,6 +157,24 @@ export default function DashboardPage() {
 
     const handleRemoveImage = (index: number) => {
         const newImages = imageUrls.filter((_, i) => i !== index);
+        setImageUrls(newImages);
+    };
+
+    const handleMoveImageUp = (index: number) => {
+        if (index === 0) return;
+        const newImages = [...imageUrls];
+        const temp = newImages[index];
+        newImages[index] = newImages[index - 1];
+        newImages[index - 1] = temp;
+        setImageUrls(newImages);
+    };
+
+    const handleMoveImageDown = (index: number) => {
+        if (index === imageUrls.length - 1) return;
+        const newImages = [...imageUrls];
+        const temp = newImages[index];
+        newImages[index] = newImages[index + 1];
+        newImages[index + 1] = temp;
         setImageUrls(newImages);
     };
 
@@ -1157,6 +1177,46 @@ export default function DashboardPage() {
                                                 style={styles.input}
                                                 readOnly={url.startsWith("/uploads/")}
                                             />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleMoveImageUp(index)}
+                                                disabled={index === 0}
+                                                style={{
+                                                    background: "var(--bg-secondary)",
+                                                    border: "1px solid var(--border-color)",
+                                                    color: index === 0 ? "var(--text-muted)" : "var(--text-primary)",
+                                                    width: 40,
+                                                    height: 40,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    borderRadius: "var(--radius-sm)",
+                                                    cursor: index === 0 ? "not-allowed" : "pointer",
+                                                    flexShrink: 0,
+                                                }}
+                                            >
+                                                <ArrowUp size={16} />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleMoveImageDown(index)}
+                                                disabled={index === imageUrls.length - 1}
+                                                style={{
+                                                    background: "var(--bg-secondary)",
+                                                    border: "1px solid var(--border-color)",
+                                                    color: index === imageUrls.length - 1 ? "var(--text-muted)" : "var(--text-primary)",
+                                                    width: 40,
+                                                    height: 40,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    borderRadius: "var(--radius-sm)",
+                                                    cursor: index === imageUrls.length - 1 ? "not-allowed" : "pointer",
+                                                    flexShrink: 0,
+                                                }}
+                                            >
+                                                <ArrowDown size={16} />
+                                            </button>
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveImage(index)}
