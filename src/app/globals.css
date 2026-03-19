@@ -1236,7 +1236,9 @@ h6 {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    gap: 20px;
+    scroll-padding-left: 24px;
+    scroll-padding-right: 24px;
+    gap: 16px;
     padding-bottom: 24px;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -1245,6 +1247,8 @@ h6 {
     margin-right: -24px;
     padding-left: 24px;
     padding-right: 24px;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
   }
   
   .projects-grid::-webkit-scrollbar {
@@ -1253,7 +1257,15 @@ h6 {
 
   .project-card {
     min-width: 85vw;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  /* Ensure padding is enforced at the end of the scroll container on iOS */
+  .projects-grid::after {
+    content: '';
+    min-width: 8px;
+    height: 1px;
     flex-shrink: 0;
   }
 
