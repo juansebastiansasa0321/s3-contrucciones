@@ -1232,7 +1232,8 @@ h6 {
     gap: 32px;
   }
 
-  .projects-grid {
+  .projects-grid,
+  .blog-grid {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -1251,19 +1252,22 @@ h6 {
     -webkit-overflow-scrolling: touch;
   }
   
-  .projects-grid::-webkit-scrollbar {
+  .projects-grid::-webkit-scrollbar,
+  .blog-grid::-webkit-scrollbar {
     display: none;
   }
 
-  .project-card {
-    min-width: calc(100vw - 48px);
-    max-width: calc(100vw - 48px);
+  .project-card,
+  .blog-card {
+    min-width: 75vw;
+    max-width: 75vw;
     scroll-snap-align: start;
     flex-shrink: 0;
   }
 
   /* Ensure padding is enforced at the end of the scroll container on iOS */
-  .projects-grid::after {
+  .projects-grid::after,
+  .blog-grid::after {
     content: '';
     min-width: 8px;
     height: 1px;
