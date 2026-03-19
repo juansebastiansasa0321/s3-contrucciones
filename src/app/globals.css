@@ -366,7 +366,6 @@ h6 {
   padding: 8px;
 }
 
-/* ===== HERO ===== */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -374,6 +373,7 @@ h6 {
   position: relative;
   overflow: hidden;
   padding-top: 80px;
+  padding-bottom: 100px;
 }
 
 .hero::before {
