@@ -37,7 +37,7 @@ export default async function BlogPage() {
 
             <section className="section">
                 <div className="container">
-                    <div className="blog-grid">
+                    <div className="blog-archive-grid">
                         {blogData.map((post) => (
                             <Link
                                 key={post.id}
