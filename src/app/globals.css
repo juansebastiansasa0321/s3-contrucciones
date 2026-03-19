@@ -1256,7 +1256,8 @@ h6 {
   }
 
   .project-card {
-    min-width: 85vw;
+    min-width: calc(100vw - 48px);
+    max-width: calc(100vw - 48px);
     scroll-snap-align: start;
     flex-shrink: 0;
   }
