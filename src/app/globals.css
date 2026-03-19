@@ -1221,10 +1221,6 @@ h6 {
     text-align: center;
   }
 
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
   .about-grid,
   .area-content,
   .contact-grid {
@@ -1233,7 +1229,8 @@ h6 {
   }
 
   .projects-grid,
-  .blog-grid {
+  .blog-grid,
+  .services-grid {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -1252,12 +1249,14 @@ h6 {
   }
   
   .projects-grid::-webkit-scrollbar,
-  .blog-grid::-webkit-scrollbar {
+  .blog-grid::-webkit-scrollbar,
+  .services-grid::-webkit-scrollbar {
     display: none;
   }
 
   .project-card,
-  .blog-card {
+  .blog-card,
+  .services-grid .card {
     min-width: 75vw;
     max-width: 75vw;
     scroll-snap-align: start;
@@ -1287,7 +1286,8 @@ h6 {
 
   /* Ensure padding is enforced at the end of the scroll container on iOS */
   .projects-grid::after,
-  .blog-grid::after {
+  .blog-grid::after,
+  .services-grid::after {
     content: '';
     min-width: 8px;
     height: 1px;
@@ -1336,6 +1336,17 @@ h6 {
 @media (max-width: 480px) {
   .container {
     padding: 0 16px;
+  }
+
+  .projects-grid,
+  .blog-grid,
+  .services-grid {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-left: 16px;
+    scroll-padding-right: 16px;
   }
 
   .hero-stats {
