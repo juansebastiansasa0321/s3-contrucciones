@@ -1227,10 +1227,49 @@ h6 {
 
   .about-grid,
   .area-content,
-  .contact-grid,
-  .projects-grid {
+  .contact-grid {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  .projects-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding-bottom: 24px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    /* Create visual bleed to edge while preserving container align */
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  
+  .projects-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-card {
+    min-width: 85vw;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: var(--radius-md);
+  }
+  
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .card h3 {
+    font-size: 1.1rem;
   }
 
   .about-features {
