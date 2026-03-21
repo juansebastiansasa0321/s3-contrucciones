@@ -2,27 +2,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  /* Colors - Navy/Gray/White Theme ("Maestros de Obra" - Stability & Cleanliness) */
-  --bg-primary: #0a1128;
-  --bg-secondary: #131c31; /* Slightly lighter for better section contrast */
-  --bg-card: #141e33;
-  --bg-card-hover: #1b2641;
-  --bg-glass: rgba(10, 17, 40, 0.7);
+  /* Colors - Deep Navy & Architectural Gold Theme ("Maestros de Obra" - Premium & Trust) */
+  --bg-primary: #070c17; /* Very deep premium navy */
+  --bg-secondary: #0d1629; /* Slightly lighter for better section contrast */
+  --bg-card: #111c33;
+  --bg-card-hover: #162442;
+  --bg-glass: rgba(7, 12, 23, 0.7);
   --bg-glass-light: rgba(255, 255, 255, 0.03);
 
   --text-primary: #ffffff;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
 
-  --accent: #3b82f6; /* Clean crisp blue */
-  --accent-light: #60a5fa;
-  --accent-dark: #2563eb;
-  --accent-glow: rgba(59, 130, 246, 0.3);
-  --accent-subtle: rgba(59, 130, 246, 0.1);
+  --accent: #d4af37; /* Premium Gold */
+  --accent-light: #f3e5ab;
+  --accent-dark: #aa8c2c;
+  --accent-glow: rgba(212, 175, 55, 0.25);
+  --accent-subtle: rgba(212, 175, 55, 0.1);
 
-  --gradient-gold: linear-gradient(135deg, #cbd5e1, #ffffff, #cbd5e1); /* Re-mapped gold to clean white/silver gradient for texts */
-  --gradient-dark: linear-gradient(180deg, #0a1128 0%, #0f172a 50%, #0c142b 100%);
-  --gradient-hero: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(10, 17, 40, 0.95) 50%, rgba(59, 130, 246, 0.08) 100%);
+  --gradient-gold: linear-gradient(135deg, #f9f0a5, #d4af37, #997a15);
+  --gradient-dark: linear-gradient(180deg, #070c17 0%, #0a1120 50%, #080d19 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(13, 22, 41, 0.4) 0%, rgba(7, 12, 23, 0.95) 70%, rgba(212, 175, 55, 0.05) 100%);
   --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
 
   --border-color: rgba(255, 255, 255, 0.08);

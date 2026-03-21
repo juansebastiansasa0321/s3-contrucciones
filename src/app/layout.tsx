@@ -5,6 +5,7 @@ import "./globals.css";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.s3contrucciones.com"),
   title: "Maestros & Remodelaciones Cali - Jamundí | Construcción Profesional",
   description:
     "Expertos en construcción, remodelaciones, acabados y obra blanca en Cali y Jamundí. Maestros de obra profesionales, pintura, plomería y ornamentación. ¡Cotiza tu proyecto hoy!",
@@ -13,9 +14,10 @@ export const metadata: Metadata = {
     "maestros de obra Jamundí",
     "remodelaciones Cali",
     "remodelaciones Jamundí",
-    "construcción Cali",
+    "construcción de casas Cali",
     "acabados de construcción Cali",
     "obra blanca Cali",
+    "remodelación de fachadas Jamundí",
     "albañiles Cali",
     "empresa de remodelaciones Valle del Cauca",
     "pintura y yeso Cali",
@@ -30,6 +32,14 @@ export const metadata: Metadata = {
       "Construimos y remodelamos tu hogar con acabados de primera calidad en Cali y Jamundí. Maestros de obra con experiencia comprobada.",
     url: "https://www.s3contrucciones.com",
     siteName: "Maestros & Remodelaciones Cali - Jamundí",
+    images: [
+      {
+        url: "/cali_hero_bg.png",
+        width: 1200,
+        height: 630,
+        alt: "Maestros de Obra en Cali y Jamundí",
+      },
+    ],
     locale: "es_CO",
     type: "website",
   },
@@ -38,6 +48,7 @@ export const metadata: Metadata = {
     title: "Maestros & Remodelaciones Cali - Jamundí",
     description:
       "Expertos en construcción, acabados y remodelaciones en Cali y Jamundí, Valle del Cauca.",
+    images: ["/cali_hero_bg.png"],
   },
   robots: {
     index: true,
