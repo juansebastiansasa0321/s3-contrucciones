@@ -133,6 +133,7 @@ export default async function Home() {
                   title: string;
                   description: string;
                   icon: string;
+                  image?: string;
                 },
                 index: number
               ) => (
@@ -141,6 +142,7 @@ export default async function Home() {
                   title={service.title}
                   description={service.description}
                   icon={service.icon}
+                  image={service.image}
                   index={index}
                 />
               )
