@@ -24,7 +24,8 @@ export default function ContactForm() {
 
     const validatePhone = (phone: string) => {
         const cleaned = phone.replace(/\s/g, "");
-        return /^[0-9]{7,15}$/.test(cleaned);
+        // Only accept exactly 10 digits
+        return /^[0-9]{10}$/.test(cleaned);
     };
 
     const validateEmail = (email: string) => {
@@ -39,14 +40,17 @@ export default function ContactForm() {
         const phone = (formData.get("phone") as string || "").trim();
         const email = (formData.get("email") as string || "").trim();
         const service = formData.get("service") as string || "";
+        const location = formData.get("location") as string || "";
+        const address = (formData.get("address") as string || "").trim();
         const message = (formData.get("message") as string || "").trim();
 
         // Validate
         const newErrors: Record<string, string> = {};
         if (!name || name.length < 2) newErrors.name = "Ingresa tu nombre completo";
-        if (!validatePhone(phone)) newErrors.phone = "Ingresa un número de teléfono válido";
+        if (!validatePhone(phone)) newErrors.phone = "Ingresa un número celular de 10 dígitos";
         if (!validateEmail(email)) newErrors.email = "Ingresa un email válido (ej: tu@email.com)";
         if (!service) newErrors.service = "Selecciona un servicio";
+        if (!location) newErrors.location = "Selecciona una ciudad o ubicación";
         if (!message || message.length < 10) newErrors.message = "Describe tu proyecto (mínimo 10 caracteres)";
 
         if (Object.keys(newErrors).length > 0) {
@@ -61,7 +65,7 @@ export default function ContactForm() {
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, phone, email, service, message }),
+                body: JSON.stringify({ name, phone, email, service, location, address, message }),
             });
             if (res.ok) {
                 setSubmitted(true);
@@ -135,12 +139,14 @@ export default function ContactForm() {
                     {errors.name && <span style={{ color: "#ef4444", fontSize: "0.78rem", marginTop: 4, display: "block" }}>{errors.name}</span>}
                 </div>
                 <div className="form-group">
-                    <label htmlFor="contact-phone">Teléfono *</label>
+                    <label htmlFor="contact-phone">Teléfono / Celular (10 dígitos) *</label>
                     <input
                         id="contact-phone"
                         name="phone"
                         type="tel"
-                        placeholder="300 123 4567"
+                        pattern="[0-9]{10}"
+                        maxLength={10}
+                        placeholder="3001234567"
                         required
                         onChange={() => errors.phone && setErrors({ ...errors, phone: "" })}
                         style={errors.phone ? { borderColor: "#ef4444" } : {}}
@@ -148,6 +154,40 @@ export default function ContactForm() {
                     {errors.phone && <span style={{ color: "#ef4444", fontSize: "0.78rem", marginTop: 4, display: "block" }}>{errors.phone}</span>}
                 </div>
             </div>
+            
+            <div className="form-row">
+                <div className="form-group">
+                    <label htmlFor="contact-location">Ciudad / Ubicación *</label>
+                    <select
+                        id="contact-location"
+                        name="location"
+                        required
+                        onChange={() => errors.location && setErrors({ ...errors, location: "" })}
+                        style={errors.location ? { borderColor: "#ef4444" } : {}}
+                    >
+                        <option value="">Selecciona tu ciudad</option>
+                        <option value="Cali">Cali</option>
+                        <option value="Jamundí">Jamundí</option>
+                        <option value="Palmira">Palmira</option>
+                        <option value="Yumbo">Yumbo</option>
+                        <option value="Candelaria">Candelaria</option>
+                        <option value="Puerto Tejada">Puerto Tejada</option>
+                        <option value="Santander de Quilichao">Santander de Quilichao</option>
+                        <option value="Otro">Otra Ubicación</option>
+                    </select>
+                    {errors.location && <span style={{ color: "#ef4444", fontSize: "0.78rem", marginTop: 4, display: "block" }}>{errors.location}</span>}
+                </div>
+                <div className="form-group">
+                    <label htmlFor="contact-address">Dirección del Proyecto (Opcional)</label>
+                    <input
+                        id="contact-address"
+                        name="address"
+                        type="text"
+                        placeholder="Ej: Barrio San Fernando, Carrera 34..."
+                    />
+                </div>
+            </div>
+
             <div className="form-group">
                 <label htmlFor="contact-email">Correo electrónico</label>
                 <input
@@ -179,11 +219,11 @@ export default function ContactForm() {
                 {errors.service && <span style={{ color: "#ef4444", fontSize: "0.78rem", marginTop: 4, display: "block" }}>{errors.service}</span>}
             </div>
             <div className="form-group">
-                <label htmlFor="contact-message">Describe tu proyecto *</label>
+                <label htmlFor="contact-message">Describe tu proyecto detalladamente *</label>
                 <textarea
                     id="contact-message"
                     name="message"
-                    placeholder="Cuéntanos sobre tu proyecto: ubicación, tamaño, tipo de trabajo..."
+                    placeholder="Cuéntanos: ¿Qué tipo de espacio es? ¿Tienes medidas aproximadas? ¿Qué estilo buscas realizar?"
                     rows={4}
                     required
                     minLength={10}

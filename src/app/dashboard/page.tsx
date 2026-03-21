@@ -29,6 +29,8 @@ interface Contact {
     phone: string;
     email: string;
     service: string;
+    location?: string;
+    address?: string;
     message: string;
     status: string;
     createdAt: string;
@@ -774,6 +776,7 @@ export default function DashboardPage() {
                                             <th style={{ padding: "12px 16px", textAlign: "left" }}>Estado</th>
                                             <th style={{ padding: "12px 16px", textAlign: "left" }}>Nombre</th>
                                             <th style={{ padding: "12px 16px", textAlign: "left" }}>Teléfono</th>
+                                            <th style={{ padding: "12px 16px", textAlign: "left" }}>Ubicación</th>
                                             <th style={{ padding: "12px 16px", textAlign: "left" }}>Servicio</th>
                                             <th style={{ padding: "12px 16px", textAlign: "left" }}>Mensaje</th>
                                             <th style={{ padding: "12px 16px", textAlign: "left" }}>Fecha</th>
@@ -794,6 +797,10 @@ export default function DashboardPage() {
                                                     <td style={{ padding: "14px 16px", fontWeight: 500 }}>{c.name}</td>
                                                     <td style={{ padding: "14px 16px", color: "var(--text-secondary)" }}>
                                                         {c.phone}
+                                                    </td>
+                                                    <td style={{ padding: "14px 16px", color: "var(--text-secondary)", fontSize: "0.85rem" }}>
+                                                        {c.location || "N/A"}
+                                                        {c.address && <div style={{ fontSize: "0.75rem", opacity: 0.7 }}>{c.address}</div>}
                                                     </td>
                                                     <td style={{ padding: "14px 16px" }}>
                                                         <span

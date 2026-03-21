@@ -25,6 +25,8 @@ async function sendEmailNotification(contact: {
     phone: string;
     email: string;
     service: string;
+    location: string;
+    address: string;
     message: string;
 }) {
     try {
@@ -50,6 +52,8 @@ async function sendEmailNotification(contact: {
                 name: contact.name,
                 phone: contact.phone,
                 email: contact.email || "No proporcionado",
+                location: contact.location,
+                address: contact.address || "No proporcionada",
                 service: contact.service,
                 message: contact.message,
                 // Optional: redirect or webhook
@@ -71,9 +75,9 @@ async function sendEmailNotification(contact: {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, phone, email, service, message } = body;
+        const { name, phone, email, service, location, address, message } = body;
 
-        if (!name || !phone || !service || !message) {
+        if (!name || !phone || !service || !location || !message) {
             return NextResponse.json(
                 { error: "Faltan campos requeridos" },
                 { status: 400 }
@@ -87,6 +91,8 @@ export async function POST(request: Request) {
             phone,
             email: email || "",
             service,
+            location,
+            address: address || "",
             message,
             status: "nuevo",
             createdAt: new Date().toISOString(),
@@ -95,7 +101,7 @@ export async function POST(request: Request) {
         saveContacts(contacts);
 
         // Send email notification (non-blocking)
-        sendEmailNotification({ name, phone, email: email || "", service, message });
+        sendEmailNotification({ name, phone, email: email || "", service, location, address: address || "", message });
 
         return NextResponse.json({ success: true, id: newContact.id });
     } catch {
