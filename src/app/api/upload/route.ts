@@ -15,12 +15,18 @@ export async function POST(request: Request) {
 
         const urls: string[] = [];
 
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+            throw new Error("El sistema no detecta el BLOB_READ_WRITE_TOKEN. Si lo acabas de añadir a tu archivo .env.local, DEBES apagar el servidor de desarrollo en tu consola y volver a iniciar 'npm run dev'.");
+        }
+
         for (const file of files) {
             // Buffer explicitly to prevent stream issues
             const buffer = Buffer.from(await file.arrayBuffer());
             const blob = await put(file.name, buffer, { 
                 access: 'public',
                 contentType: file.type || 'application/octet-stream',
+                token: process.env.BLOB_READ_WRITE_TOKEN,
+                addRandomSuffix: true,
             });
             urls.push(blob.url);
         }
