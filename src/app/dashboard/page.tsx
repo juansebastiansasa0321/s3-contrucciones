@@ -181,23 +181,45 @@ export default function DashboardPage() {
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files || files.length === 0) return;
+        
         setUploading(true);
         try {
-            const formData = new FormData();
+            const newUrls: string[] = [];
+            
             for (let i = 0; i < files.length; i++) {
-                formData.append("files", files[i]);
+                const file = files[i];
+                if (file.size > 4.4 * 1024 * 1024) {
+                    alert(`La imagen "${file.name}" es muy pesada (máx 4.4MB). Por favor redúcela o comprímela.`);
+                    continue; // Saltar esta imagen muy pesada
+                }
+                
+                const formData = new FormData();
+                formData.append("files", file);
+                
+                const res = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+                
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error || `Error al subir la imagen: ${file.name}`);
+                }
+                
+                const data = await res.json();
+                if (data.urls && data.urls.length > 0) {
+                    newUrls.push(data.urls[0]);
+                }
             }
-            const res = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
-            const data = await res.json();
-            if (data.urls) {
-                setImageUrls([...imageUrls, ...data.urls]);
+            
+            if (newUrls.length > 0) {
+                // Actualiza el estado agregando las url nuevas generadas
+                setImageUrls(prev => [...prev, ...newUrls]);
             }
-        } catch (err) {
+            
+        } catch (err: any) {
             console.error("Error uploading files:", err);
-            alert("Error al subir las imágenes. Intenta de nuevo.");
+            alert(err.message || "Error al subir las imágenes. Intenta de nuevo.");
         } finally {
             setUploading(false);
             if (fileInputRef.current) fileInputRef.current.value = "";
@@ -207,21 +229,35 @@ export default function DashboardPage() {
     const handleBlogFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files || files.length === 0) return;
+        
+        const file = files[0];
+        if (file.size > 4.4 * 1024 * 1024) {
+             alert(`La imagen principal es muy pesada (máx 4.4MB). Por favor redúcela o comprímela.`);
+             if (blogFileInputRef.current) blogFileInputRef.current.value = "";
+             return;
+        }
+
         setUploading(true);
         try {
             const formData = new FormData();
-            formData.append("files", files[0]); // Only allow 1 image for blog post main image
+            formData.append("files", file); // Only allow 1 image for blog post main image
             const res = await fetch("/api/upload", {
                 method: "POST",
                 body: formData,
             });
+            
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || "Error subiendo la imagen principal");
+            }
+
             const data = await res.json();
             if (data.urls && data.urls.length > 0) {
                 setBlogImageUrl(data.urls[0]);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("Error uploading file:", err);
-            alert("Error al subir la imagen. Intenta de nuevo.");
+            alert(err.message || "Error al subir la imagen. Intenta de nuevo.");
         } finally {
             setUploading(false);
             if (blogFileInputRef.current) blogFileInputRef.current.value = "";
