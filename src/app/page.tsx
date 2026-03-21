@@ -53,8 +53,7 @@ export default async function Home() {
             alt="Remodelaciones y Construcción Profesionales Cali Jamundí"
             fill
             style={{ objectFit: "cover", objectPosition: "center center", opacity: 0.95 }}
-            sizes="100vw"
-            quality={100}
+            unoptimized={true}
             priority
           />
         </div>
