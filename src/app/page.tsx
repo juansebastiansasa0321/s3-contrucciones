@@ -52,7 +52,7 @@ export default async function Home() {
             src="/cali_hero_bg.png"
             alt="Remodelaciones y Construcción Profesionales Cali Jamundí"
             fill
-            style={{ objectFit: "cover", objectPosition: "center center", opacity: 0.75 }}
+            style={{ objectFit: "cover", objectPosition: "center center", opacity: 0.95 }}
             sizes="100vw"
             quality={100}
             priority

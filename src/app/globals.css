@@ -22,7 +22,7 @@
 
   --gradient-gold: linear-gradient(135deg, #f9f0a5, #d4af37, #997a15);
   --gradient-dark: linear-gradient(180deg, #070c17 0%, #0a1120 50%, #080d19 100%);
-  --gradient-hero: linear-gradient(135deg, rgba(7, 12, 23, 0.4) 0%, rgba(7, 12, 23, 0.75) 60%, rgba(212, 175, 55, 0.08) 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(7, 12, 23, 0.6) 0%, rgba(7, 12, 23, 0.1) 50%, rgba(212, 175, 55, 0.15) 100%);
   --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
 
   --border-color: rgba(255, 255, 255, 0.08);
