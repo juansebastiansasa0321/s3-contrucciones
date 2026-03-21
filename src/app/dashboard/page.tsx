@@ -312,7 +312,7 @@ export default function DashboardPage() {
             category: form.get("category") as string,
             features: selectedFeatures,
             year: parseInt(form.get("year") as string) || new Date().getFullYear(),
-            order: parseInt(form.get("order") as string) || 0,
+            order: editingProject ? editingProject.order || 0 : projects.length,
             image: mainImage,
             images: validImages,
         };
@@ -362,6 +362,42 @@ export default function DashboardPage() {
     const handleEditProject = (project: Project) => {
         setEditingProject(project);
         setShowProjectForm(true);
+    };
+
+    const handleMoveProjectUp = async (index: number) => {
+        if (index === 0) return;
+        const newProjects = [...projects];
+        const temp = newProjects[index];
+        newProjects[index] = newProjects[index - 1];
+        newProjects[index - 1] = temp;
+        
+        const updatedProjects = newProjects.map((p, i) => ({ ...p, order: i }));
+        setProjects(updatedProjects);
+        
+        await fetch("/api/projects", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedProjects),
+        });
+        showToast("Orden actualizado");
+    };
+
+    const handleMoveProjectDown = async (index: number) => {
+        if (index === projects.length - 1) return;
+        const newProjects = [...projects];
+        const temp = newProjects[index];
+        newProjects[index] = newProjects[index + 1];
+        newProjects[index + 1] = temp;
+        
+        const updatedProjects = newProjects.map((p, i) => ({ ...p, order: i }));
+        setProjects(updatedProjects);
+        
+        await fetch("/api/projects", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedProjects),
+        });
+        showToast("Orden actualizado");
     };
 
     const handleSaveBlogPost = async (e: FormEvent<HTMLFormElement>) => {
@@ -854,7 +890,7 @@ export default function DashboardPage() {
                             </div>
                         ) : (
                             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                                {projects.map((p) => (
+                                {projects.map((p, index) => (
                                     <div key={p.id} style={styles.projectCard}>
                                         <div
                                             style={{
@@ -913,6 +949,34 @@ export default function DashboardPage() {
                                             )}
                                         </div>
                                         <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                                            <button
+                                                onClick={() => handleMoveProjectUp(index)}
+                                                disabled={index === 0}
+                                                style={{
+                                                    width: 36, height: 36, borderRadius: "var(--radius-sm)",
+                                                    background: "var(--bg-secondary)", border: "1px solid var(--border-color)",
+                                                    color: index === 0 ? "var(--text-muted)" : "var(--text-primary)",
+                                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                                    cursor: index === 0 ? "not-allowed" : "pointer",
+                                                }}
+                                                title="Mover arriba"
+                                            >
+                                                <ArrowUp size={16} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleMoveProjectDown(index)}
+                                                disabled={index === projects.length - 1}
+                                                style={{
+                                                    width: 36, height: 36, borderRadius: "var(--radius-sm)",
+                                                    background: "var(--bg-secondary)", border: "1px solid var(--border-color)",
+                                                    color: index === projects.length - 1 ? "var(--text-muted)" : "var(--text-primary)",
+                                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                                    cursor: index === projects.length - 1 ? "not-allowed" : "pointer",
+                                                }}
+                                                title="Mover abajo"
+                                            >
+                                                <ArrowDown size={16} />
+                                            </button>
                                             <button
                                                 onClick={() => handleEditProject(p)}
                                                 style={{
@@ -1038,27 +1102,15 @@ export default function DashboardPage() {
                                         </select>
                                     </div>
                                 </div>
-                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
-                                    <div>
-                                        <label style={styles.label}>Año</label>
-                                        <input
-                                            name="year"
-                                            type="number"
-                                            placeholder="2025"
-                                            defaultValue={editingProject?.year || new Date().getFullYear()}
-                                            style={styles.input}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label style={styles.label}>Orden (Menor = Principal)</label>
-                                        <input
-                                            name="order"
-                                            type="number"
-                                            placeholder="0"
-                                            defaultValue={editingProject?.order || 0}
-                                            style={styles.input}
-                                        />
-                                    </div>
+                                <div style={{ marginBottom: 20 }}>
+                                    <label style={styles.label}>Año</label>
+                                    <input
+                                        name="year"
+                                        type="number"
+                                        placeholder="2025"
+                                        defaultValue={editingProject?.year || new Date().getFullYear()}
+                                        style={styles.input}
+                                    />
                                 </div>
 
                                 {/* Features Selector */}
