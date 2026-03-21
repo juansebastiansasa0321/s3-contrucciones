@@ -1627,6 +1627,24 @@ h6 {
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
+  padding-right: 24px; /* leave room for scrollbar */
+}
+
+.project-modal-info::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-modal-info::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-modal-info::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.project-modal-info::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .project-modal-category {
@@ -1674,7 +1692,6 @@ h6 {
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.7;
-  white-space: pre-wrap;
 }
 
 .project-modal-features {

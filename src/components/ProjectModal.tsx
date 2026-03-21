@@ -196,8 +196,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         </span>
                     </div>
 
-                    <p className="project-modal-description">{project.description}</p>
-
+                    <div className="project-modal-description">
+                        {project.description.split('\n').map((paragraph, idx) => (
+                            paragraph.trim() ? (
+                                <p key={idx} style={{ marginBottom: '12px' }}>
+                                    {paragraph}
+                                </p>
+                            ) : null
+                        ))}
+                    </div>
                     {project.features.length > 0 && (
                         <div className="project-modal-features">
                             <h4>Características</h4>
