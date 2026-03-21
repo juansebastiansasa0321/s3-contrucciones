@@ -366,6 +366,25 @@ export default function DashboardPage() {
         setShowProjectForm(true);
     };
 
+    const handleToggleContactStatus = async (id: string, newStatus: string) => {
+        setContacts((prev) => prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c)));
+        try {
+            await fetch("/api/contact", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, status: newStatus }),
+            });
+            showToast("Estado actualizado");
+        } catch (error) {
+            showToast("Error al actualizar");
+            const res = await fetch("/api/contact");
+            if (res.ok) {
+                const data = await res.json();
+                setContacts(data);
+            }
+        }
+    };
+
     const handleMoveProjectUp = async (index: number) => {
         if (index === 0) return;
         const newProjects = [...projects];
@@ -789,10 +808,22 @@ export default function DashboardPage() {
                                             .map((c) => (
                                                 <tr key={c.id} style={{ borderTop: "1px solid var(--border-color)" }}>
                                                     <td style={{ padding: "14px 16px" }}>
-                                                        <span style={styles.badge(c.status === "nuevo" ? "gold" : "green")}>
-                                                            {c.status === "nuevo" ? <Clock size={12} /> : <CheckCircle size={12} />}
-                                                            {c.status === "nuevo" ? " Nuevo" : " Contactado"}
-                                                        </span>
+                                                        <button
+                                                            onClick={() => handleToggleContactStatus(c.id, c.status === "nuevo" ? "contactado" : "nuevo")}
+                                                            style={{
+                                                                background: "none",
+                                                                border: "none",
+                                                                padding: 0,
+                                                                cursor: "pointer",
+                                                                outline: "none"
+                                                            }}
+                                                            title="Haz clic para cambiar el estado"
+                                                        >
+                                                            <span style={styles.badge(c.status === "nuevo" ? "gold" : "green")}>
+                                                                {c.status === "nuevo" ? <Clock size={12} /> : <CheckCircle size={12} />}
+                                                                {c.status === "nuevo" ? " Nuevo" : " Contactado"}
+                                                            </span>
+                                                        </button>
                                                     </td>
                                                     <td style={{ padding: "14px 16px", fontWeight: 500 }}>{c.name}</td>
                                                     <td style={{ padding: "14px 16px", color: "var(--text-secondary)" }}>

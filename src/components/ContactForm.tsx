@@ -104,15 +104,24 @@ export default function ContactForm() {
                         <CheckCircle size={32} color="#25d366" />
                     </div>
                     <h3 style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-                        ¡Mensaje enviado! ✅
+                        ¡Información enviada con éxito! ✅
                     </h3>
                     <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.6 }}>
                         Gracias por contactarnos. Revisaremos tu solicitud y te responderemos lo antes posible.
                     </p>
+                    <a
+                        href="https://wa.me/573147872392?text=Hola%2C%20acabo%20de%20enviar%20una%20solicitud%20de%20cotizaci%C3%B3n%20en%20su%20p%C3%A1gina%20web"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-whatsapp"
+                        style={{ marginTop: 8, width: "100%", justifyContent: "center" }}
+                    >
+                        Contáctanos por WhatsApp
+                    </a>
                     <button
-                        onClick={() => setSubmitted(false)}
+                        onClick={() => { setSubmitted(false); formRef.current?.reset(); setErrors({}); }}
                         className="btn btn-secondary"
-                        style={{ marginTop: 8 }}
+                        style={{ marginTop: 8, width: "100%", justifyContent: "center" }}
                     >
                         Enviar otra solicitud
                     </button>
