@@ -49,11 +49,12 @@ export default async function Home() {
           zIndex: 0,
         }}>
           <Image
-            src="/cali_hero_bg.png"
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=3840&q=100"
             alt="Remodelaciones y Construcción Profesionales Cali Jamundí"
             fill
-            style={{ objectFit: "cover", objectPosition: "center center", opacity: 0.95 }}
-            unoptimized={true}
+            style={{ objectFit: "cover", objectPosition: "center center", opacity: 0.85 }}
+            sizes="100vw"
+            quality={90}
             priority
           />
         </div>
