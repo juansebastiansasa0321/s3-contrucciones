@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
     Building2,
     Paintbrush,
@@ -28,6 +29,7 @@ interface ServiceCardProps {
     description: string;
     icon: string;
     index: number;
+    image?: string;
 }
 
 export default function ServiceCard({
@@ -35,15 +37,32 @@ export default function ServiceCard({
     description,
     icon,
     index,
+    image,
 }: ServiceCardProps) {
     return (
         <div
-            className="card"
+            className="service-card card"
             style={{ animationDelay: `${index * 0.1}s` }}
         >
-            <div className="card-icon">{iconMap[icon] || <Building2 size={26} />}</div>
-            <h3>{title}</h3>
-            <p>{description}</p>
+            {image && (
+                <div className="service-card-image">
+                    <Image
+                        src={image}
+                        alt={title}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                        unoptimized={image.startsWith("http")}
+                    />
+                    <div className="service-card-image-overlay" />
+                </div>
+            )}
+            
+            <div className="service-card-content">
+                <div className="card-icon">{iconMap[icon] || <Building2 size={26} />}</div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+            </div>
         </div>
     );
 }

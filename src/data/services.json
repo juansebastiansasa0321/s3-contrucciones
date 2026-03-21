@@ -4,55 +4,63 @@
     "title": "Construcción Completa",
     "description": "Construimos tu casa desde los cimientos hasta la entrega final. Proyecto llave en mano con los mejores materiales y acabados.",
     "icon": "Building2",
-    "category": "construccion"
+    "category": "construccion",
+    "image": "/uploads/1771722171884-lxqxv1.webp"
   },
   {
     "id": "acabados",
     "title": "Acabados de Alta Calidad",
     "description": "Pisos, enchapes, estucos, cielos rasos y todos los acabados que transforman tu espacio en un hogar de ensueño.",
     "icon": "Paintbrush",
-    "category": "acabados"
+    "category": "acabados",
+    "image": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80"
   },
   {
     "id": "remodelacion",
     "title": "Remodelación",
     "description": "Renovamos cocinas, baños y espacios completos. Dale una nueva vida a tu hogar con diseños modernos.",
     "icon": "Hammer",
-    "category": "remodelacion"
+    "category": "remodelacion",
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
   },
   {
     "id": "pintura",
     "title": "Pintura Profesional",
     "description": "Pintura interior y exterior con productos de primera calidad. Técnicas decorativas y acabados impecables.",
     "icon": "Palette",
-    "category": "acabados"
+    "category": "acabados",
+    "image": "https://images.unsplash.com/photo-1562259929-b7e181d8d9b5?w=800&q=80"
   },
   {
     "id": "plomeria",
     "title": "Plomería e Instalaciones",
     "description": "Instalación y reparación de redes hidráulicas y sanitarias. Trabajo garantizado y materiales certificados.",
     "icon": "Wrench",
-    "category": "instalaciones"
+    "category": "instalaciones",
+    "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80"
   },
   {
     "id": "ornamentacion",
     "title": "Ornamentación",
     "description": "Diseño y fabricación de estructuras metálicas decorativas: rejas, pasamanos, puertas, ventanas y cerramientos con acabados de lujo.",
     "icon": "Fence",
-    "category": "ornamentacion"
+    "category": "ornamentacion",
+    "image": "/uploads/1771723874377-srgos4.jpg"
   },
   {
     "id": "techos",
     "title": "Techos y Cubiertas",
     "description": "Instalación de techos en teja, eternit, policarbonato y cielo raso. Protección y diseño para tu hogar.",
     "icon": "Home",
-    "category": "construccion"
+    "category": "construccion",
+    "image": "https://images.unsplash.com/photo-1510698114675-9e1e2c90cbea?w=800&q=80"
   },
   {
     "id": "pisos",
     "title": "Pisos y Enchapes",
     "description": "Instalación de pisos en cerámica, porcelanato, madera laminada y vinilo. Precisión milimétrica en cada detalle.",
     "icon": "LayoutGrid",
-    "category": "acabados"
+    "category": "acabados",
+    "image": "/uploads/1771723670723-yn58ur.jpg"
   }
 ]
