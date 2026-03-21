@@ -395,6 +395,9 @@ export default async function Home() {
                 </div>
               </div>
             </div>
+            <div className="contact-form-wrapper">
+              <ContactForm />
+            </div>
           </div>
         </div>
       </section>
