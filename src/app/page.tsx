@@ -35,7 +35,7 @@ const TestimonialCarousel = dynamicImport(() => import("@/components/Testimonial
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const { rows: projectsData } = await pool.query('SELECT * FROM projects ORDER BY year DESC');
+  const { rows: projectsData } = await pool.query('SELECT * FROM projects ORDER BY "order" ASC, year DESC');
   const { rows: blogData } = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC LIMIT 2');
   return (
     <>
