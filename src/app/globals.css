@@ -1819,6 +1819,11 @@ h6 {
     -webkit-overflow-scrolling: touch;
   }
 
+  .project-modal-info {
+    overflow-y: visible !important;
+    padding-right: 24px !important;
+  }
+
   .project-modal-gallery {
     position: relative;
     flex-shrink: 0;
