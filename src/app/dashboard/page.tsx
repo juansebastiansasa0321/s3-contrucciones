@@ -62,6 +62,16 @@ interface BlogPost {
     image: string;
 }
 
+interface Service {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+    category?: string;
+    image?: string;
+    order?: number;
+}
+
 const PREDEFINED_FEATURES = [
     "Cocina Integral",
     "Cielo Raso",
@@ -84,12 +94,18 @@ export default function DashboardPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+    const [services, setServices] = useState<Service[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<"contacts" | "projects" | "blog">("contacts");
+    const [activeTab, setActiveTab] = useState<"contacts" | "projects" | "blog" | "services">("contacts");
+    
     const [showProjectForm, setShowProjectForm] = useState(false);
     const [showBlogForm, setShowBlogForm] = useState(false);
+    const [showServiceForm, setShowServiceForm] = useState(false);
+    
     const [editingProject, setEditingProject] = useState<Project | null>(null);
     const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
+    const [editingService, setEditingService] = useState<Service | null>(null);
+    
     const [toastMessage, setToastMessage] = useState<string | null>(null);
 
     const showToast = (message: string) => {
@@ -107,20 +123,26 @@ export default function DashboardPage() {
     const [blogTags, setBlogTags] = useState<string[]>([]);
     const [blogCustomTag, setBlogCustomTag] = useState("");
 
+    // Form state Services
+    const [serviceImageUrl, setServiceImageUrl] = useState("");
+
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const blogFileInputRef = useRef<HTMLInputElement>(null);
+    const serviceFileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         Promise.all([
             fetch("/api/contact").then((res) => res.json()),
             fetch("/api/projects").then((res) => res.json()),
-            fetch("/api/blog").then((res) => res.json()).catch(() => []), // Added catch for blog incase it's not setup yet
+            fetch("/api/blog").then((res) => res.json()).catch(() => []),
+            fetch("/api/services").then((res) => res.json()).catch(() => []),
         ])
-            .then(([contactsData, projectsData, blogData]) => {
+            .then(([contactsData, projectsData, blogData, servicesData]) => {
                 setContacts(contactsData);
                 setProjects(projectsData);
                 setBlogPosts(Array.isArray(blogData) ? blogData : []);
+                setServices(Array.isArray(servicesData) ? servicesData : []);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
@@ -145,6 +167,14 @@ export default function DashboardPage() {
             setBlogImageUrl("");
         }
     }, [editingBlogPost]);
+
+    useEffect(() => {
+        if (editingService) {
+            setServiceImageUrl(editingService.image || "");
+        } else {
+            setServiceImageUrl("");
+        }
+    }, [editingService]);
 
     const totalNew = contacts.filter((c) => c.status === "nuevo").length;
 
@@ -264,6 +294,44 @@ export default function DashboardPage() {
         } finally {
             setUploading(false);
             if (blogFileInputRef.current) blogFileInputRef.current.value = "";
+        }
+    };
+
+    const handleServiceFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        
+        const file = files[0];
+        if (file.size > 4.4 * 1024 * 1024) {
+             alert(`La imagen es muy pesada (máx 4.4MB). Por favor redúcela o comprímela.`);
+             if (serviceFileInputRef.current) serviceFileInputRef.current.value = "";
+             return;
+        }
+
+        setUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append("files", file);
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+            
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || "Error subiendo la imagen del servicio");
+            }
+
+            const data = await res.json();
+            if (data.urls && data.urls.length > 0) {
+                setServiceImageUrl(data.urls[0]);
+            }
+        } catch (err: any) {
+            console.error("Error uploading file:", err);
+            alert(err.message || "Error al subir la imagen. Intenta de nuevo.");
+        } finally {
+            setUploading(false);
+            if (serviceFileInputRef.current) serviceFileInputRef.current.value = "";
         }
     };
 
@@ -482,6 +550,58 @@ export default function DashboardPage() {
     const handleEditBlogPost = (post: BlogPost) => {
         setEditingBlogPost(post);
         setShowBlogForm(true);
+    };
+
+    const handleSaveService = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const form = new FormData(e.currentTarget);
+
+        const serviceData = {
+            id: editingService ? editingService.id : form.get("id") as string,
+            title: form.get("title") as string,
+            description: form.get("description") as string,
+            icon: form.get("icon") as string,
+            category: form.get("category") as string,
+            image: serviceImageUrl,
+            order: parseInt(form.get("order") as string) || (editingService ? editingService.order : services.length),
+        };
+
+        if (editingService) {
+            const updated = services.map(s => s.id === editingService.id ? serviceData : s);
+            setServices(updated as Service[]);
+            await fetch("/api/services", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(serviceData)
+            });
+            showToast("Servicio actualizado exitosamente");
+        } else {
+            const res = await fetch("/api/services", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(serviceData)
+            });
+            if(res.ok) {
+               const result = await res.json();
+               setServices([...services, result]);
+               showToast("Servicio creado exitosamente");
+            }
+        }
+        setShowServiceForm(false);
+        setEditingService(null);
+        setServiceImageUrl("");
+    };
+
+    const handleDeleteService = async (id: string) => {
+        if (!confirm("¿Estás seguro de eliminar este servicio?")) return;
+        const updated = services.filter(s => s.id !== id);
+        setServices(updated);
+        await fetch(`/api/services?id=${id}`, { method: "DELETE" });
+    };
+
+    const handleEditService = (service: Service) => {
+        setEditingService(service);
+        setShowServiceForm(true);
     };
 
     const styles = {
@@ -755,6 +875,14 @@ export default function DashboardPage() {
                     >
                         <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <FileText size={16} /> Blog
+                        </span>
+                    </button>
+                    <button
+                        style={styles.tab(activeTab === "services")}
+                        onClick={() => setActiveTab("services")}
+                    >
+                        <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <Building2 size={16} /> Servicios
                         </span>
                     </button>
                 </div>
@@ -1754,6 +1882,99 @@ export default function DashboardPage() {
                                 </button>
                             </form>
                         </div>
+                    </div>
+                )}
+                {/* ===== SERVICES TAB ===== */}
+                {activeTab === "services" && (
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+                            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", fontWeight: 700 }}>
+                                Servicios Ofrecidos
+                            </h2>
+                            <button
+                                onClick={() => { setEditingService(null); setShowServiceForm(true); }}
+                                style={{
+                                    display: "flex", alignItems: "center", gap: 8, padding: "10px 24px",
+                                    background: "var(--gradient-gold)", color: "#050507", borderRadius: 100,
+                                    fontWeight: 700, fontSize: "0.88rem", border: "none", cursor: "pointer",
+                                    boxShadow: "var(--shadow-glow)",
+                                }}
+                            >
+                                <Plus size={18} /> Nuevo Servicio
+                            </button>
+                        </div>
+                        {services.length === 0 ? (
+                            <div style={{ padding: 60, textAlign: "center", color: "var(--text-muted)", background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-lg)" }}>
+                                <p>No hay servicios configurados.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}>
+                                {services.map((s, idx) => (
+                                    <div key={s.id} style={{
+                                        background: "var(--bg-card)", border: "1px solid var(--border-color)",
+                                        borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", overflow: "hidden"
+                                    }}>
+                                        <div style={{ height: 140, background: s.image ? `url(${s.image}) center/cover` : "var(--bg-secondary)" }} />
+                                        <div style={{ padding: 20 }}>
+                                            <h3 style={{ fontSize: "1.05rem", fontWeight: 700, marginBottom: 8 }}>{s.title}</h3>
+                                            <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: 16 }}>{s.description.substring(0, 80)}...</p>
+                                            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+                                                <button onClick={() => handleEditService(s)} style={{ width: 32, height: 32, borderRadius: 6, border: "none", background: "var(--accent-subtle)", color: "var(--accent)", cursor: "pointer" }}><Edit3 size={14} /></button>
+                                                <button onClick={() => handleDeleteService(s.id)} style={{ width: 32, height: 32, borderRadius: 6, border: "none", background: "rgba(239,68,68,0.1)", color: "#ef4444", cursor: "pointer" }}><Trash2 size={14} /></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* SERVICE FORM MODAL */}
+                        {showServiceForm && (
+                            <div style={styles.formOverlay} onClick={() => setShowServiceForm(false)}>
+                                <div style={styles.formCard} onClick={e => e.stopPropagation()}>
+                                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
+                                        <h2 style={{ fontSize: "1.3rem", fontWeight: 700 }}>{editingService ? "Editar Servicio" : "Nuevo Servicio"}</h2>
+                                        <button onClick={() => setShowServiceForm(false)} style={{ background: "none", border: "none", cursor: "pointer" }}><X size={22} /></button>
+                                    </div>
+                                    <form onSubmit={handleSaveService}>
+                                        {!editingService && (
+                                            <div style={{ marginBottom: 16 }}>
+                                                <label style={styles.label}>ID del Servicio (sin espacios, ej: remodelacion) *</label>
+                                                <input name="id" type="text" required style={styles.input} />
+                                            </div>
+                                        )}
+                                        <div style={{ marginBottom: 16 }}>
+                                            <label style={styles.label}>Título del servicio *</label>
+                                            <input name="title" type="text" required defaultValue={editingService?.title || ""} style={styles.input} />
+                                        </div>
+                                        <div style={{ marginBottom: 16 }}>
+                                            <label style={styles.label}>Descripción *</label>
+                                            <textarea name="description" required defaultValue={editingService?.description || ""} rows={3} style={{ ...styles.input, resize: "vertical" }} />
+                                        </div>
+                                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                                            <div>
+                                                <label style={styles.label}>Icono (nombre Componente lucide-react) *</label>
+                                                <input name="icon" type="text" required defaultValue={editingService?.icon || ""} style={styles.input} />
+                                            </div>
+                                            <div>
+                                                <label style={styles.label}>Orden numérico</label>
+                                                <input name="order" type="number" defaultValue={editingService?.order || services.length} style={styles.input} />
+                                            </div>
+                                        </div>
+                                        <div style={{ marginBottom: 24 }}>
+                                            <label style={styles.label}>Fotografía (URL o Subir)</label>
+                                            <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                                                <input type="text" value={serviceImageUrl} onChange={(e) => setServiceImageUrl(e.target.value)} style={styles.input} />
+                                                <button type="button" onClick={() => serviceFileInputRef.current?.click()} disabled={uploading} style={{ padding: "0 16px", background: "var(--gradient-gold)", border: "none", borderRadius: 4, cursor: "pointer" }}><Upload size={16} /></button>
+                                            </div>
+                                            <input ref={serviceFileInputRef} type="file" accept="image/*" onChange={handleServiceFileUpload} style={{ display: "none" }} />
+                                            {serviceImageUrl && <div style={{ height: 160, borderRadius: 8, background: `url(${serviceImageUrl}) center/cover` }} />}
+                                        </div>
+                                        <button type="submit" style={{ width: "100%", padding: 14, background: "var(--gradient-gold)", border: "none", borderRadius: 100, fontWeight: 700, cursor: "pointer" }}>Guardar Servicio</button>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
