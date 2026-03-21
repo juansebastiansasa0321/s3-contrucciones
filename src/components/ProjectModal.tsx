@@ -12,6 +12,7 @@ interface Project {
     category: string;
     features: string[];
     year: number;
+    order?: number;
     image?: string;
     images?: string[];
 }

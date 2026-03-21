@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
-        const result = await pool.query('SELECT * FROM projects ORDER BY year DESC');
+        const result = await pool.query('SELECT * FROM projects ORDER BY "order" ASC, year DESC');
         return NextResponse.json(result.rows);
     } catch (error) {
         console.error("Error fetching projects:", error);
@@ -23,14 +23,15 @@ export async function POST(request: Request) {
             images: body.images || [],
             features: body.features || [],
             year: body.year || new Date().getFullYear(),
+            order: body.order || 0,
         };
 
         await pool.query(
-            `INSERT INTO projects (id, title, description, location, category, images, image, features, year) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            `INSERT INTO projects (id, title, description, location, category, images, image, features, year, "order") 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
             [
                 newProject.id, newProject.title, newProject.description, newProject.location, newProject.category,
-                JSON.stringify(newProject.images), newProject.image, JSON.stringify(newProject.features), newProject.year
+                JSON.stringify(newProject.images), newProject.image, JSON.stringify(newProject.features), newProject.year, newProject.order
             ]
         );
 
@@ -51,8 +52,8 @@ export async function PUT(request: Request) {
                 await client.query('DELETE FROM projects');
                 for (const p of body) {
                     await client.query(
-                        `INSERT INTO projects (id, title, description, location, category, images, image, features, year) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-                        [p.id, p.title, p.description, p.location, p.category, JSON.stringify(p.images || []), p.image, JSON.stringify(p.features || []), p.year || new Date().getFullYear()]
+                        `INSERT INTO projects (id, title, description, location, category, images, image, features, year, "order") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+                        [p.id, p.title, p.description, p.location, p.category, JSON.stringify(p.images || []), p.image, JSON.stringify(p.features || []), p.year || new Date().getFullYear(), p.order || 0]
                     );
                 }
                 await client.query('COMMIT');

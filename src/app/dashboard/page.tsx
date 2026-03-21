@@ -42,6 +42,7 @@ interface Project {
     category: string;
     features: string[];
     year: number;
+    order?: number;
     image?: string;
     images?: string[];
 }
@@ -311,6 +312,7 @@ export default function DashboardPage() {
             category: form.get("category") as string,
             features: selectedFeatures,
             year: parseInt(form.get("year") as string) || new Date().getFullYear(),
+            order: parseInt(form.get("order") as string) || 0,
             image: mainImage,
             images: validImages,
         };
@@ -1036,15 +1038,27 @@ export default function DashboardPage() {
                                         </select>
                                     </div>
                                 </div>
-                                <div style={{ marginBottom: 20 }}>
-                                    <label style={styles.label}>Año</label>
-                                    <input
-                                        name="year"
-                                        type="number"
-                                        placeholder="2025"
-                                        defaultValue={editingProject?.year || new Date().getFullYear()}
-                                        style={styles.input}
-                                    />
+                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+                                    <div>
+                                        <label style={styles.label}>Año</label>
+                                        <input
+                                            name="year"
+                                            type="number"
+                                            placeholder="2025"
+                                            defaultValue={editingProject?.year || new Date().getFullYear()}
+                                            style={styles.input}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={styles.label}>Orden (Menor = Principal)</label>
+                                        <input
+                                            name="order"
+                                            type="number"
+                                            placeholder="0"
+                                            defaultValue={editingProject?.order || 0}
+                                            style={styles.input}
+                                        />
+                                    </div>
                                 </div>
 
                                 {/* Features Selector */}
