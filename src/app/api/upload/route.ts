@@ -16,15 +16,20 @@ export async function POST(request: Request) {
         const urls: string[] = [];
 
         for (const file of files) {
-            const blob = await put(file.name, file, { access: 'public' });
+            // Buffer explicitly to prevent stream issues
+            const buffer = Buffer.from(await file.arrayBuffer());
+            const blob = await put(file.name, buffer, { 
+                access: 'public',
+                contentType: file.type || 'application/octet-stream',
+            });
             urls.push(blob.url);
         }
 
         return NextResponse.json({ success: true, urls });
-    } catch (error) {
-        console.error("Upload error:", error);
+    } catch (error: any) {
+        console.error("Upload error detallado:", error);
         return NextResponse.json(
-            { error: "Error al subir archivos" },
+            { error: `Detalle del Servidor Vercel Blob: ${error.message || String(error)}` },
             { status: 500 }
         );
     }
