@@ -20,8 +20,6 @@ import {
   Building2,
 } from "lucide-react";
 
-import servicesData from "@/data/services.json";
-
 import testimonialsData from "@/data/testimonials.json";
 
 // Dynamic imports for below-the-fold heavy components
@@ -37,6 +35,7 @@ export const dynamic = 'force-dynamic';
 export default async function Home() {
   const { rows: projectsData } = await pool.query('SELECT * FROM projects ORDER BY "order" ASC, year DESC');
   const { rows: blogData } = await pool.query('SELECT * FROM blog_posts ORDER BY date DESC LIMIT 2');
+  const { rows: servicesData } = await pool.query('SELECT * FROM services ORDER BY "order" ASC');
   return (
     <>
       <Navbar />
