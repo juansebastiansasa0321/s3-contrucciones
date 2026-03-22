@@ -627,7 +627,6 @@ h6 {
 }
 
 /* ===== UNIFIED GRID CAROUSELS ===== */
-.projects-grid,
 .blog-grid,
 .services-grid {
   display: flex;
@@ -640,7 +639,6 @@ h6 {
   scrollbar-width: none; /* Firefox */
 }
 
-.projects-grid::-webkit-scrollbar,
 .blog-grid::-webkit-scrollbar,
 .services-grid::-webkit-scrollbar {
   display: none;
@@ -650,13 +648,6 @@ h6 {
 .services-grid .card {
   min-width: 350px;
   max-width: 350px;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
-
-.project-card {
-  min-width: calc(50% - 12px);
-  max-width: calc(50% - 12px);
   scroll-snap-align: start;
   flex-shrink: 0;
 }
@@ -1325,6 +1316,20 @@ h6 {
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  .projects-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .projects-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .projects-grid,

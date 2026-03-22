@@ -10,6 +10,7 @@ interface SwipeIndicatorProps {
 
 export default function SwipeIndicator({ containerId, itemCount }: SwipeIndicatorProps) {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isScrollable, setIsScrollable] = useState(false);
 
     useEffect(() => {
         const container = document.getElementById(containerId);
@@ -21,9 +22,11 @@ export default function SwipeIndicator({ containerId, itemCount }: SwipeIndicato
             
             if (scrollWidth <= 0) {
                 setActiveIndex(0);
+                setIsScrollable(false);
                 return;
             }
             
+            setIsScrollable(true);
             const progress = scrollLeft / scrollWidth;
             const index = Math.min(
                 Math.max(Math.round(progress * (itemCount - 1)), 0),
@@ -37,10 +40,16 @@ export default function SwipeIndicator({ containerId, itemCount }: SwipeIndicato
         // Initial setup
         setTimeout(handleScroll, 100);
 
-        return () => container.removeEventListener("scroll", handleScroll);
+        // Also check on window resize
+        window.addEventListener("resize", handleScroll);
+
+        return () => {
+            container.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleScroll);
+        };
     }, [containerId, itemCount]);
 
-    if (itemCount <= 1) return null;
+    if (itemCount <= 1 || !isScrollable) return null;
 
     const scrollPrev = () => {
         const container = document.getElementById(containerId);
