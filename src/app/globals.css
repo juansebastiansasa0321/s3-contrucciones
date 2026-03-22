@@ -626,11 +626,33 @@ h6 {
   z-index: 1;
 }
 
-/* ===== SERVICES GRID ===== */
+/* ===== UNIFIED GRID CAROUSELS ===== */
+.projects-grid,
+.blog-grid,
 .services-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 24px;
   gap: 24px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.projects-grid::-webkit-scrollbar,
+.blog-grid::-webkit-scrollbar,
+.services-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.project-card,
+.blog-card,
+.services-grid .card {
+  min-width: 350px;
+  max-width: 350px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
 }
 
 /* Service Card Edge-to-Edge Image Layout */
@@ -1302,37 +1324,20 @@ h6 {
   .projects-grid,
   .blog-grid,
   .services-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    gap: 16px;
     scroll-padding-left: 24px;
     scroll-padding-right: 24px;
-    gap: 16px;
-    padding-bottom: 24px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    /* Create visual bleed to edge while preserving container align */
     margin-left: -24px;
     margin-right: -24px;
     padding-left: 24px;
     padding-right: 24px;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .projects-grid::-webkit-scrollbar,
-  .blog-grid::-webkit-scrollbar,
-  .services-grid::-webkit-scrollbar {
-    display: none;
   }
 
   .project-card,
   .blog-card,
   .services-grid .card {
-    min-width: 75vw;
-    max-width: 75vw;
-    scroll-snap-align: start;
-    flex-shrink: 0;
+    min-width: 80vw;
+    max-width: 80vw;
   }
 
   .project-card-body p,
