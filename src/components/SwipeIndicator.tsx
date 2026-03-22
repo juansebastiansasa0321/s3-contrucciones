@@ -44,12 +44,20 @@ export default function SwipeIndicator({ containerId, itemCount }: SwipeIndicato
 
     const scrollPrev = () => {
         const container = document.getElementById(containerId);
-        if (container) container.scrollBy({ left: -380, behavior: 'smooth' });
+        if (container && container.firstElementChild) {
+            const cardWidth = container.firstElementChild.getBoundingClientRect().width;
+            const gap = 24; 
+            container.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+        }
     };
 
     const scrollNext = () => {
         const container = document.getElementById(containerId);
-        if (container) container.scrollBy({ left: 380, behavior: 'smooth' });
+        if (container && container.firstElementChild) {
+            const cardWidth = container.firstElementChild.getBoundingClientRect().width;
+            const gap = 24; 
+            container.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
+        }
     };
 
     return (

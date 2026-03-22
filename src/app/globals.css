@@ -646,11 +646,17 @@ h6 {
   display: none;
 }
 
-.project-card,
 .blog-card,
 .services-grid .card {
   min-width: 350px;
   max-width: 350px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+.project-card {
+  min-width: calc(50% - 12px);
+  max-width: calc(50% - 12px);
   scroll-snap-align: start;
   flex-shrink: 0;
 }
@@ -1333,9 +1339,9 @@ h6 {
     padding-right: 24px;
   }
 
-  .project-card,
   .blog-card,
-  .services-grid .card {
+  .services-grid .card,
+  .project-card {
     min-width: 80vw;
     max-width: 80vw;
   }
