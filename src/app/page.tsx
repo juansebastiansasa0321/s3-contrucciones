@@ -292,42 +292,44 @@ export default async function Home() {
               proyecto.
             </p>
           </div>
-          <div className="blog-grid" id="blog-carousel">
-            {blogData.map((post) => (
-              <a
-                key={post.id}
-                href={`/blog/${post.id}`}
-                className="blog-card"
-              >
-                <div className="blog-card-image">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    style={{ objectFit: "cover" }}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="blog-card-category">
-                    {post.category}
+          <div className="desktop-only-blog-grid">
+            <div className="blog-grid" id="blog-carousel">
+              {blogData.map((post) => (
+                <a
+                  key={post.id}
+                  href={`/blog/${post.id}`}
+                  className="blog-card"
+                >
+                  <div className="blog-card-image">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      style={{ objectFit: "cover" }}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="blog-card-category">
+                      {post.category}
+                    </div>
                   </div>
-                </div>
-                <div className="blog-card-content">
-                  <h3 className="blog-card-title">{post.title}</h3>
-                  <p className="blog-card-excerpt">{post.excerpt}</p>
-                  <div className="blog-card-footer">
-                    <span className="blog-card-meta">
-                      <Clock size={14} />
-                      {post.readTime} min de lectura
-                    </span>
-                    <span className="blog-card-link">
-                      Leer más <ArrowRight size={16} />
-                    </span>
+                  <div className="blog-card-content">
+                    <h3 className="blog-card-title">{post.title}</h3>
+                    <p className="blog-card-excerpt">{post.excerpt}</p>
+                    <div className="blog-card-footer">
+                      <span className="blog-card-meta">
+                        <Clock size={14} />
+                        {post.readTime} min de lectura
+                      </span>
+                      <span className="blog-card-link">
+                        Leer más <ArrowRight size={16} />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              ))}
+            </div>
+            <SwipeIndicator containerId="blog-carousel" itemCount={blogData.length} />
           </div>
-          <SwipeIndicator containerId="blog-carousel" itemCount={blogData.length} />
           <div style={{ textAlign: "center", marginTop: 36 }}>
             <a href="/blog" className="btn btn-secondary">
               Ver todos los artículos
