@@ -1219,12 +1219,18 @@ h6 {
   color: var(--text-muted);
 }
 
-/* ===== WHATSAPP FLOAT ===== */
-.whatsapp-float {
+/* ===== WHATSAPP FLOAT & TOOLTIP ===== */
+.whatsapp-wrapper {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.whatsapp-float {
   width: 60px;
   height: 60px;
   background: #25d366;
@@ -1235,8 +1241,54 @@ h6 {
   color: white;
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
   transition: var(--transition-spring);
+  position: relative; /* Changed from fixed since wrapper is now fixed */
+}
+
+.whatsapp-float.pulse {
   animation: whatsappPulse 2s ease-in-out infinite;
 }
+
+.whatsapp-tooltip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-glow);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  white-space: nowrap;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.whatsapp-tooltip-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.whatsapp-tooltip-close:hover {
+  color: var(--accent);
+}
+
 
 .whatsapp-float:hover {
   transform: scale(1.12);
